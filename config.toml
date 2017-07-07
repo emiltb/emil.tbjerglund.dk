@@ -1,6 +1,6 @@
-baseurl = "https://example.com/"  # End your URL with a `/` trailing slash.
-title = "Academic"
-copyright = "&copy; 2016 Your Name"
+baseurl = "https://emil.tbjerglund.dk/"  # End your URL with a `/` trailing slash.
+title = "emiltb"
+copyright = "&copy; 2017 Emil Tveden Bjerglund"
 theme = "hugo-academic"
 enableEmoji = true
 footnotereturnlinkcontents = "<sup>^</sup>"
@@ -19,17 +19,17 @@ defaultContentLanguageInSubdir = false
   hrefTargetBlank = true
 
 [params]
-  name = "Lena Smith"
-  role = "Professor of Artificial Intelligence"
-  organization = "Stanford University"
+  name = "Emil Tveden Bjerglund"
+  role = "Ph.d.-student in Nanoscience"
+  organization = "Aarhus University"
   organization_url = ""
   gravatar = false  # Get your avatar from Gravatar.com? (true/false)
-  avatar = "portrait.jpg"  # Specify an avatar image (in `static/img/` folder) or delete value to disable avatar.
-  email = "test@example.org"
-  address = "Building 1 Room 1, Stanford University, California, 90210, USA"
-  office_hours = "Monday 10:00 to 13:00 or email for appointment"
-  phone = "888 888 88 88"
-  skype = "echo123"
+  avatar = "emil_portrait.jpg"  # Specify an avatar image (in `static/img/` folder) or delete value to disable avatar.
+  email = "emil@tbjerglund.com"
+  address = "" # "Building 1 Room 1, Stanford University, California, 90210, USA"
+  office_hours = "" # "Monday 10:00 to 13:00 or email for appointment"
+  phone = ""
+  skype = "" # "emilbjerglundpedersen"
   telegram = ""
 
   # Enable Keybase in Contact section by entering your keybase.io username.
@@ -41,7 +41,7 @@ defaultContentLanguageInSubdir = false
 
   # Enable global LaTeX math rendering?
   #   If false, you can enable it locally on a per page basis.
-  math = false
+  math = true
 
   # Highlight.js options
   #   highlight
@@ -126,12 +126,12 @@ defaultContentLanguageInSubdir = false
   [[params.social]]
     icon = "envelope"
     icon_pack = "fa"
-    link = "mailto:test@example.org"
+    link = "mailto:emil@tbjerglund.dk"
 
   [[params.social]]
     icon = "twitter"
     icon_pack = "fa"
-    link = "//twitter.com/GeorgeCushen"
+    link = "//twitter.com/emilbp"
 
   [[params.social]]
     icon = "google-scholar"
@@ -141,7 +141,7 @@ defaultContentLanguageInSubdir = false
   [[params.social]]
     icon = "github"
     icon_pack = "fa"
-    link = "//github.com/gcushen"
+    link = "//github.com/emiltb"
 
 
 # Navigation Links
