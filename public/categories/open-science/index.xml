@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Open Science on emiltb</title>
+    <link>/categories/open-science/</link>
+    <description>Recent content in Open Science on emiltb</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2017 Emil Tveden Bjerglund</copyright>
+    <lastBuildDate>Fri, 07 Jul 2017 00:00:00 +0000</lastBuildDate>
+    <atom:link href="/categories/open-science/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Developing an R package for a research group</title>
+      <link>/post/developing-an-r-package-for-a-research-group/</link>
+      <pubDate>Fri, 07 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/post/developing-an-r-package-for-a-research-group/</guid>
+      <description>&lt;p&gt;Currently in the Organic Surface Chemistry group there are large variations between group members when it comes to the tools used for data analysis. Some people feel most comfortable in spreadsheet programs such as Origin or Excel, while others rely on a mix of Matlab, R, Python or other tools. We use a lot of different experimental techniques in our research, and therefore generate data in a lot of different formats. Different workflows of varying efficiency often makes joint projects more difficult than necessary.&lt;/p&gt;
+&lt;div id=&#34;open-science&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Open Science&lt;/h1&gt;
+&lt;p&gt;Recently a lot of our research activities has been oriented towards the &lt;a href=&#34;//www.spoman-os.org&#34;&gt;SPOMAN Open Science collaboration&lt;/a&gt;, and the ongoing projects are available on the &lt;a href=&#34;//osf.io/wudyt&#34;&gt;Open Science Framework (osf.io)&lt;/a&gt;. In most cases, the methods and results are thoroughly described for each project. However, since a lot of the data analysis is currently performed in spreadsheet software, the data analysis is not very transparent and reproducible. Our research could be made more efficient and well-documented if R was adopted as a general tool for data analysis.&lt;span class=&#34;citation&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Very clear and well-documented data analysis by use of R Markdown documents, were descriptions scripts etc. can be made available in plain-text files.&lt;/li&gt;
+&lt;li&gt;Reuse of code for common techniques by developing an R package containing methods that can be useful for all group members.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;references&#34; class=&#34;section level1 unnumbered&#34;&gt;
+&lt;h1&gt;References&lt;/h1&gt;
+&lt;div id=&#34;refs&#34; class=&#34;references&#34;&gt;
+&lt;div id=&#34;ref-Lowndes2017&#34;&gt;
+&lt;p&gt;(1) Lowndes, J. S. S.; Best, B. D.; Scarborough, C.; Afflerbach, J. C.; Frazier, M. R.; O’Hara, C. C.; Jiang, N.; Halpern, B. S. Our path to better science in less time using open data science tools. &lt;em&gt;Nature Ecology &amp;amp; Evolution&lt;/em&gt; &lt;strong&gt;2017&lt;/strong&gt;, &lt;em&gt;1&lt;/em&gt; (6), 0160 DOI: &lt;a href=&#34;https://doi.org/10.1038/s41559-017-0160&#34;&gt;10.1038/s41559-017-0160&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

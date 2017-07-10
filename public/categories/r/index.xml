@@ -7,52 +7,31 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2017 Emil Tveden Bjerglund</copyright>
-    <lastBuildDate>Thu, 23 Jul 2015 21:13:14 -0500</lastBuildDate>
+    <lastBuildDate>Fri, 07 Jul 2017 00:00:00 +0000</lastBuildDate>
     <atom:link href="/categories/r/" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>Hello R Markdown</title>
-      <link>/post/2015-07-23-r-rmarkdown/</link>
-      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
+      <title>Developing an R package for a research group</title>
+      <link>/post/developing-an-r-package-for-a-research-group/</link>
+      <pubDate>Fri, 07 Jul 2017 00:00:00 +0000</pubDate>
       
-      <guid>/post/2015-07-23-r-rmarkdown/</guid>
-      <description>&lt;div id=&#34;r-markdown&#34; class=&#34;section level1&#34;&gt;
-&lt;h1&gt;R Markdown&lt;/h1&gt;
-&lt;p&gt;This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see &lt;a href=&#34;http://rmarkdown.rstudio.com&#34; class=&#34;uri&#34;&gt;http://rmarkdown.rstudio.com&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;You can embed an R code chunk like this:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(cars)
-##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00
-fit &amp;lt;- lm(dist ~ speed, data = cars)
-fit
-## 
-## Call:
-## lm(formula = dist ~ speed, data = cars)
-## 
-## Coefficients:
-## (Intercept)        speed  
-##     -17.579        3.932&lt;/code&gt;&lt;/pre&gt;
+      <guid>/post/developing-an-r-package-for-a-research-group/</guid>
+      <description>&lt;p&gt;Currently in the Organic Surface Chemistry group there are large variations between group members when it comes to the tools used for data analysis. Some people feel most comfortable in spreadsheet programs such as Origin or Excel, while others rely on a mix of Matlab, R, Python or other tools. We use a lot of different experimental techniques in our research, and therefore generate data in a lot of different formats. Different workflows of varying efficiency often makes joint projects more difficult than necessary.&lt;/p&gt;
+&lt;div id=&#34;open-science&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Open Science&lt;/h1&gt;
+&lt;p&gt;Recently a lot of our research activities has been oriented towards the &lt;a href=&#34;//www.spoman-os.org&#34;&gt;SPOMAN Open Science collaboration&lt;/a&gt;, and the ongoing projects are available on the &lt;a href=&#34;//osf.io/wudyt&#34;&gt;Open Science Framework (osf.io)&lt;/a&gt;. In most cases, the methods and results are thoroughly described for each project. However, since a lot of the data analysis is currently performed in spreadsheet software, the data analysis is not very transparent and reproducible. Our research could be made more efficient and well-documented if R was adopted as a general tool for data analysis.&lt;span class=&#34;citation&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Very clear and well-documented data analysis by use of R Markdown documents, were descriptions scripts etc. can be made available in plain-text files.&lt;/li&gt;
+&lt;li&gt;Reuse of code for common techniques by developing an R package containing methods that can be useful for all group members.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
-&lt;div id=&#34;including-plots&#34; class=&#34;section level1&#34;&gt;
-&lt;h1&gt;Including Plots&lt;/h1&gt;
-&lt;p&gt;You can also embed plots. See Figure &lt;a href=&#34;#fig:pie&#34;&gt;1&lt;/a&gt; for example:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;par(mar = c(0, 1, 0, 1))
-pie(
-  c(280, 60, 20),
-  c(&amp;#39;Sky&amp;#39;, &amp;#39;Sunny side of pyramid&amp;#39;, &amp;#39;Shady side of pyramid&amp;#39;),
-  col = c(&amp;#39;#0292D8&amp;#39;, &amp;#39;#F7EA39&amp;#39;, &amp;#39;#C4B632&amp;#39;),
-  init.angle = -50, border = NA
-)&lt;/code&gt;&lt;/pre&gt;
-&lt;div class=&#34;figure&#34;&gt;&lt;span id=&#34;fig:pie&#34;&gt;&lt;/span&gt;
-&lt;img src=&#34;/post/2015-07-23-r-rmarkdown_files/figure-html/pie-1.png&#34; alt=&#34;A fancy pie chart.&#34; width=&#34;672&#34; /&gt;
-&lt;p class=&#34;caption&#34;&gt;
-Figure 1: A fancy pie chart.
-&lt;/p&gt;
+&lt;div id=&#34;references&#34; class=&#34;section level1 unnumbered&#34;&gt;
+&lt;h1&gt;References&lt;/h1&gt;
+&lt;div id=&#34;refs&#34; class=&#34;references&#34;&gt;
+&lt;div id=&#34;ref-Lowndes2017&#34;&gt;
+&lt;p&gt;(1) Lowndes, J. S. S.; Best, B. D.; Scarborough, C.; Afflerbach, J. C.; Frazier, M. R.; O’Hara, C. C.; Jiang, N.; Halpern, B. S. Our path to better science in less time using open data science tools. &lt;em&gt;Nature Ecology &amp;amp; Evolution&lt;/em&gt; &lt;strong&gt;2017&lt;/strong&gt;, &lt;em&gt;1&lt;/em&gt; (6), 0160 DOI: &lt;a href=&#34;https://doi.org/10.1038/s41559-017-0160&#34;&gt;10.1038/s41559-017-0160&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 </description>

@@ -18,6 +18,6 @@ url_slides = ""
 url_video = ""
 
 [header]
-image = "headers/funcarray.jpg"
+image = ""
 caption = ""
 +++

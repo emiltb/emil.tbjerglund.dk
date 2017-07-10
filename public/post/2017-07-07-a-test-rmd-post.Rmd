@@ -1,0 +1,19 @@
+---
+title: A test Rmd post
+author: ~
+date: '2017-07-07'
+slug: a-test-rmd-post
+categories: []
+tags: []
+---
+
+This post is supposed to contain some R markdown.
+
+```{r}
+library(tidyverse)
+mtcars %>% 
+  ggplot(aes(mpg, wt, color = as.factor(cyl))) +
+  geom_point() + 
+  facet_wrap(~am)
+```
+
