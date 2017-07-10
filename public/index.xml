@@ -16,14 +16,14 @@
       <pubDate>Fri, 07 Jul 2017 00:00:00 +0000</pubDate>
       
       <guid>/post/open-science-tools-for-our-research-group/</guid>
-      <description>&lt;p&gt;Currently in the &lt;a href=&#34;//surfchem.dk&#34;&gt;Organic Surface Chemistry group&lt;/a&gt;, which I am part of, there are large variations between group members when it comes to the tools used for data analysis. Some people feel most comfortable in spreadsheet programs such as Origin or Excel, while others rely on a mix of Matlab, R, Python or other tools. We use a lot of different experimental techniques in our research, and therefore generate data in a lot of different formats. Different workflows of varying efficiency often makes joint projects more difficult than necessary.&lt;/p&gt;
+      <description>&lt;p&gt;Currently in the &lt;a href=&#34;//surfchem.dk&#34;&gt;Organic Surface Chemistry group&lt;/a&gt;, there are large variations between our group members when it comes to the tools used for data analysis. Some people feel most comfortable in spreadsheet programs such as Origin or Excel, while others rely on a mix of Matlab, R, Python or other tools. We use a lot of different experimental techniques in our research, and therefore generate data in a lot of different formats. Different workflows of varying efficiency often makes joint projects more difficult than necessary.&lt;/p&gt;
 &lt;div id=&#34;open-science&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Open Science&lt;/h2&gt;
 &lt;p&gt;Recently a lot of our research activities has been oriented towards the &lt;a href=&#34;//www.spoman-os.org&#34;&gt;SPOMAN Open Science collaboration&lt;/a&gt;, and the ongoing projects are available on the &lt;a href=&#34;//osf.io/wudyt&#34;&gt;Open Science Framework (osf.io)&lt;/a&gt;. In most cases, the methods and results are thoroughly described for each project. However, since a lot of the data analysis is currently performed in spreadsheet software, the data analysis is not very transparent and reproducible. &lt;span class=&#34;citation&#34;&gt;Lowndes et al. (2017)&lt;/span&gt; discusses exactly this issue, and describes how the use of &lt;a href=&#34;//www.r-project.org&#34;&gt;R&lt;/a&gt; and &lt;a href=&#34;//github.com&#34;&gt;GitHub&lt;/a&gt; has allowed them to do better science in less time.&lt;/p&gt;
-&lt;p&gt;For a while I have been considering how to apply this thinking to our research. I am confident that it could be made more efficient and well-documented if R was adopted as a general tool for data analysis. I will try to give my reasoning for this below.&lt;/p&gt;
+&lt;p&gt;I have been considering how to apply this thinking to our research. I am confident that it could be made more efficient and well-documented if R was adopted as a general tool for data analysis.&lt;/p&gt;
 &lt;div id=&#34;clear-and-well-documented-analysis-in-r-markdown&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Clear and well-documented analysis in R Markdown&lt;/h3&gt;
-&lt;p&gt;If you recieve a spreadsheet from someone, containing some data analysis it can be very hard to decipher the thinking of the original author (and to be honest, analysis done by yourself 6 monts ago, might aswell be done by a complete stranger). Some of the challenges are:&lt;/p&gt;
+&lt;p&gt;If you recieve a spreadsheet from someone, containing some data analysis it can be very hard to decipher the thinking of the original author (and to be honest, analysis done by yourself 6 monts ago might as well have been done by a complete stranger). Some of the challenges are:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;There is no connection to the original data. How did the data come from your scientific equipment and into the spreadsheet? Was it in any way altered previously?&lt;/li&gt;
 &lt;li&gt;What calculations are performed? Which cells contain data and formulas? You have to manually click around to know.&lt;/li&gt;
@@ -39,9 +39,13 @@ dataset &amp;lt;- mtcars %&amp;gt;%
                                             Automatic = &amp;quot;0&amp;quot;, 
                                             Manual = &amp;quot;1&amp;quot;)
     )
-knitr::kable(head(dataset, 4), caption = &amp;quot;The mtcars dataset contain data on 32 different cars&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+
+knitr::kable(
+  head(dataset, 4), 
+  caption = &amp;quot;The mtcars dataset contain data on 32 different cars. Here 4 rows are shown.&amp;quot;
+)&lt;/code&gt;&lt;/pre&gt;
 &lt;table&gt;
-&lt;caption&gt;&lt;span id=&#34;tab:unnamed-chunk-1&#34;&gt;Table 1: &lt;/span&gt;The mtcars dataset contain data on 32 different cars&lt;/caption&gt;
+&lt;caption&gt;&lt;span id=&#34;tab:data-modify&#34;&gt;Table 1: &lt;/span&gt;The mtcars dataset contain data on 32 different cars. Here 4 rows are shown.&lt;/caption&gt;
 &lt;thead&gt;
 &lt;tr class=&#34;header&#34;&gt;
 &lt;th align=&#34;left&#34;&gt;car&lt;/th&gt;
@@ -92,12 +96,12 @@ knitr::kable(head(dataset, 4), caption = &amp;quot;The mtcars dataset contain da
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;We can then plot our dataset, in a completely reproducible manner by a few lines of code. Anyone with the datafile and this script, would be able to produce this exact plot.&lt;/p&gt;
+&lt;p&gt;We can then plot our dataset, in a completely reproducible manner by a few lines of code. Anyone with the datafile and this script, would be able to produce this exact plot. Notice that the package &lt;code&gt;ggplot2&lt;/code&gt; is used, producing publication-ready figures right away.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;dataset %&amp;gt;%  
   ggplot(aes(x = wt, y = mpg, color = Transmission)) +
   geom_point() +
   labs(x = &amp;quot;Weight (t)&amp;quot;, y = &amp;quot;Mileage (km/L)&amp;quot;, title = &amp;quot;Fuel economy&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2017-07-07-open-science-tools-for-our-research-group_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-07-07-open-science-tools-for-our-research-group_files/figure-html/data-plot-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;reuse-of-work-through-an-r-package&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Reuse of work through an R package&lt;/h3&gt;
@@ -115,7 +119,7 @@ knitr::kable(head(dataset, 4), caption = &amp;quot;The mtcars dataset contain da
 &lt;li&gt;Allows for cooperation from many users, such that the maintainence and debugging the code is independent of any single person.&lt;/li&gt;
 &lt;li&gt;Contains version control, such that users can append their own code to the project or modify other peoples code without fear of breaking stuff.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;All this is possible, if the package is made publically available as a &lt;a href=&#34;https://en.wikipedia.org/wiki/Git&#34;&gt;Git repository&lt;/a&gt; . As of writing this, I have created an empty R package that is available &lt;a href=&#34;https://github.com/SPOMAN/osc&#34;&gt;on GitHub&lt;/a&gt;, and the hope is that in due time it will be populated with lots of useful stuff for our group members. This solution makes the code publically available and very easy to use in R.&lt;/p&gt;
+&lt;p&gt;All this is possible, if the package is made publically available as a &lt;a href=&#34;https://en.wikipedia.org/wiki/Git&#34;&gt;Git repository&lt;/a&gt;. As of writing this, I have created an empty R package that is available &lt;a href=&#34;https://github.com/SPOMAN/osc&#34;&gt;on GitHub&lt;/a&gt;, and the hope is that in due time it will be populated with lots of useful stuff for our group members. This solution makes the code publically available and very easy to use in R.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Install the package from Github using the Devtools package
 install.packages(&amp;#39;devtools&amp;#39;)
 devtools::install_github(&amp;#39;SPOMAN/osc&amp;#39;)
@@ -128,7 +132,7 @@ library(osc)&lt;/code&gt;&lt;/pre&gt;
 &lt;div id=&#34;key-steps-for-implementation&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Key steps for implementation&lt;/h2&gt;
 &lt;p&gt;It is clear, that there is an inital barrier to overcome, if the implementation of R as the primary analysis tool in our group is to succeed. Currently many students in our group have very limited experience in programming, but I believe that by implementing core tools in an accessible environment this can be overcome. Teaching R to new users was discussed extensively at the useR!2017 conference I attended last week. Some materials are available in the excellent talk &lt;a href=&#34;https://github.com/mine-cetinkaya-rundel/2017-07-05-teach-ds-to-new-user&#34;&gt;“Teaching data science to new useRs” by Mine Cetinkaya-Rundel&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;In the long run I am confident that the extra workload that must be put into making a well-crafted R package will pay off, once the scientific analysis can be performed more efficient and reproducibly by every member of our research group.&lt;/p&gt;
+&lt;p&gt;In the long run I am confident that the extra workload that must be put into making a well-crafted R package will pay off, once the scientific analyses can be performed more efficient and reproducibly by every member of our research group.&lt;/p&gt;
 &lt;div id=&#34;references&#34; class=&#34;section level3 unnumbered&#34;&gt;
 &lt;h3&gt;References&lt;/h3&gt;
 &lt;div id=&#34;refs&#34; class=&#34;references&#34;&gt;

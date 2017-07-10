@@ -15,16 +15,15 @@ carnames <- rownames(mtcars)
 mtcars <- as_tibble(mtcars) %>% mutate(car = carnames) %>% select(car, mpg, cyl, hp, wt, am)
 ```
 
-
-Currently in the [Organic Surface Chemistry group](//surfchem.dk), which I am part of, there are large variations between group members when it comes to the tools used for data analysis. Some people feel most comfortable in spreadsheet programs such as Origin or Excel, while others rely on a mix of Matlab, R, Python or other tools. We use a lot of different experimental techniques in our research, and therefore generate data in a lot of different formats. Different workflows of varying efficiency often makes joint projects more difficult than necessary.
+Currently in the [Organic Surface Chemistry group](//surfchem.dk), there are large variations between our group members when it comes to the tools used for data analysis. Some people feel most comfortable in spreadsheet programs such as Origin or Excel, while others rely on a mix of Matlab, R, Python or other tools. We use a lot of different experimental techniques in our research, and therefore generate data in a lot of different formats. Different workflows of varying efficiency often makes joint projects more difficult than necessary.
 
 ## Open Science
 Recently a lot of our research activities has been oriented towards the [SPOMAN Open Science collaboration](//www.spoman-os.org), and the ongoing projects are available on the [Open Science Framework (osf.io)](//osf.io/wudyt). In most cases, the methods and results are thoroughly described for each project. However, since a lot of the data analysis is currently performed in spreadsheet software, the data analysis is not very transparent and reproducible. @Lowndes2017 discusses exactly this issue, and describes how the use of [R](//www.r-project.org) and [GitHub](//github.com) has allowed them to do better science in less time.
 
-For a while I have been considering how to apply this thinking to our research. I am confident that it could be made more efficient and well-documented if R was adopted as a general tool for data analysis. I will try to give my reasoning for this below.
+I have been considering how to apply this thinking to our research. I am confident that it could be made more efficient and well-documented if R was adopted as a general tool for data analysis.
 
 ### Clear and well-documented analysis in R Markdown
-If you recieve a spreadsheet from someone, containing some data analysis it can be very hard to decipher the thinking of the original author (and to be honest, analysis done by yourself 6 monts ago, might aswell be done by a complete stranger). Some of the challenges are:
+If you recieve a spreadsheet from someone, containing some data analysis it can be very hard to decipher the thinking of the original author (and to be honest, analysis done by yourself 6 monts ago might as well have been done by a complete stranger). Some of the challenges are:
 
 * There is no connection to the original data. How did the data come from your scientific equipment and into the spreadsheet? Was it in any way altered previously?
 * What calculations are performed? Which cells contain data and formulas? You have to manually click around to know.
@@ -34,7 +33,7 @@ R provides a very nice feature which can alleviate these challenges, and make an
 
 We could for example provide the script for loading a dataset and directly show how a few of the variables are modified. This is demonstrated here for R's built-in `mtcars` dataset.
 
-```{r message=FALSE, warning=FALSE}
+```{r data-modify, message=FALSE, warning=FALSE}
 library(tidyverse)
 dataset <- mtcars %>% 
   mutate(wt = wt*0.45359,      # Convert lbs to tons
@@ -43,12 +42,16 @@ dataset <- mtcars %>%
                                             Automatic = "0", 
                                             Manual = "1")
     )
-knitr::kable(head(dataset, 4), caption = "The mtcars dataset contain data on 32 different cars")
+
+knitr::kable(
+  head(dataset, 4), 
+  caption = "The mtcars dataset contain data on 32 different cars. Here 4 rows are shown."
+)
 ```
 
-We can then plot our dataset, in a completely reproducible manner by a few lines of code. Anyone with the datafile and this script, would be able to produce this exact plot.
+We can then plot our dataset, in a completely reproducible manner by a few lines of code. Anyone with the datafile and this script, would be able to produce this exact plot. Notice that the package `ggplot2` is used, producing publication-ready figures right away.
 
-```{r fig.height=3, message=FALSE, warning=FALSE}
+```{r data-plot, fig.height=3, message=FALSE, warning=FALSE}
 dataset %>%  
   ggplot(aes(x = wt, y = mpg, color = Transmission)) +
   geom_point() +
@@ -69,7 +72,7 @@ When you have then made your R package, how is it then distributed among group m
 * Allows for cooperation from many users, such that the maintainence and debugging the code is independent of any single person.
 * Contains version control, such that users can append their own code to the project or modify other peoples code without fear of breaking stuff.
 
-All this is possible, if the package is made publically available as a [Git repository](https://en.wikipedia.org/wiki/Git) . As of writing this, I have created an empty R package that is available [on GitHub](https://github.com/SPOMAN/osc), and the hope is that in due time it will be populated with lots of useful stuff for our group members. This solution makes the code publically available and very easy to use in R.
+All this is possible, if the package is made publically available as a [Git repository](https://en.wikipedia.org/wiki/Git). As of writing this, I have created an empty R package that is available [on GitHub](https://github.com/SPOMAN/osc), and the hope is that in due time it will be populated with lots of useful stuff for our group members. This solution makes the code publically available and very easy to use in R.
 
 ```{r eval=FALSE}
 # Install the package from Github using the Devtools package
@@ -85,6 +88,6 @@ Github further allows users and developers to [track _issues_](https://github.co
 ## Key steps for implementation
 It is clear, that there is an inital barrier to overcome, if the implementation of R as the primary analysis tool in our group is to succeed. Currently many students in our group have very limited experience in programming, but I believe that by implementing core tools in an accessible environment this can be overcome. Teaching R to new users was discussed extensively at the useR!2017 conference I attended last week. Some materials are available in the excellent talk ["Teaching data science to new useRs" by Mine Cetinkaya-Rundel](https://github.com/mine-cetinkaya-rundel/2017-07-05-teach-ds-to-new-user). 
 
-In the long run I am confident that the extra workload that must be put into making a well-crafted R package will pay off, once the scientific analysis can be performed more efficient and reproducibly by every member of our research group. 
+In the long run I am confident that the extra workload that must be put into making a well-crafted R package will pay off, once the scientific analyses can be performed more efficient and reproducibly by every member of our research group. 
 
 ### References
