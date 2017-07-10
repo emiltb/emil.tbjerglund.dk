@@ -33,17 +33,17 @@
 
   
 
-  <link rel="alternate" href="/index.xml" type="application/rss+xml" title="emiltb">
-  <link rel="feed" href="/index.xml" type="application/rss+xml" title="emiltb">
+  <link rel="alternate" href="/index.xml" type="application/rss+xml" title="Open and Efficient Research">
+  <link rel="feed" href="/index.xml" type="application/rss+xml" title="Open and Efficient Research">
 
   <link rel="icon" type="image/png" href="/img/icon.png">
   <link rel="apple-touch-icon" type="image/png" href="/img/apple-touch-icon.png">
 
-  <link rel="canonical" href="/post/developing-an-r-package-for-a-research-group/">
+  <link rel="canonical" href="/post/open-science-tools-for-our-research-group/">
 
   
 
-  <title>Developing an R package for a research group | emiltb</title>
+  <title>Open Science tools for our research group | Open and Efficient Research</title>
 
 </head>
 <body id="top" data-spy="scroll" data-target="#navbar-main" data-offset="71">
@@ -60,7 +60,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/">emiltb</a>
+      <a class="navbar-brand" href="/">Open and Efficient Research</a>
     </div>
 
     
@@ -144,7 +144,7 @@
 
 
   <div class="article-container">
-    <h1 itemprop="name">Developing an R package for a research group</h1>
+    <h1 itemprop="name">Open Science tools for our research group</h1>
     
 
 <div class="article-metadata">
@@ -182,35 +182,35 @@
   <ul class="share">
     <li>
       <a class="facebook"
-         href="https://www.facebook.com/sharer.php?u=%2fpost%2fdeveloping-an-r-package-for-a-research-group%2f"
+         href="https://www.facebook.com/sharer.php?u=%2fpost%2fopen-science-tools-for-our-research-group%2f"
          target="_blank">
         <i class="fa fa-facebook"></i>
       </a>
     </li>
     <li>
       <a class="twitter"
-         href="https://twitter.com/intent/tweet?text=Developing%20an%20R%20package%20for%20a%20research%20group&amp;url=%2fpost%2fdeveloping-an-r-package-for-a-research-group%2f"
+         href="https://twitter.com/intent/tweet?text=Open%20Science%20tools%20for%20our%20research%20group&amp;url=%2fpost%2fopen-science-tools-for-our-research-group%2f"
          target="_blank">
         <i class="fa fa-twitter"></i>
       </a>
     </li>
     <li>
       <a class="linkedin"
-         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%2fpost%2fdeveloping-an-r-package-for-a-research-group%2f&amp;title=Developing%20an%20R%20package%20for%20a%20research%20group"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%2fpost%2fopen-science-tools-for-our-research-group%2f&amp;title=Open%20Science%20tools%20for%20our%20research%20group"
          target="_blank">
         <i class="fa fa-linkedin"></i>
       </a>
     </li>
     <li>
       <a class="weibo"
-         href="http://service.weibo.com/share/share.php?url=%2fpost%2fdeveloping-an-r-package-for-a-research-group%2f&amp;title=Developing%20an%20R%20package%20for%20a%20research%20group"
+         href="http://service.weibo.com/share/share.php?url=%2fpost%2fopen-science-tools-for-our-research-group%2f&amp;title=Open%20Science%20tools%20for%20our%20research%20group"
          target="_blank">
         <i class="fa fa-weibo"></i>
       </a>
     </li>
     <li>
       <a class="email"
-         href="mailto:?subject=Developing%20an%20R%20package%20for%20a%20research%20group&amp;body=%2fpost%2fdeveloping-an-r-package-for-a-research-group%2f">
+         href="mailto:?subject=Open%20Science%20tools%20for%20our%20research%20group&amp;body=%2fpost%2fopen-science-tools-for-our-research-group%2f">
         <i class="fa fa-envelope"></i>
       </a>
     </li>
@@ -226,7 +226,7 @@
       <p>Currently in the <a href="//surfchem.dk">Organic Surface Chemistry group</a>, which I am part of, there are large variations between group members when it comes to the tools used for data analysis. Some people feel most comfortable in spreadsheet programs such as Origin or Excel, while others rely on a mix of Matlab, R, Python or other tools. We use a lot of different experimental techniques in our research, and therefore generate data in a lot of different formats. Different workflows of varying efficiency often makes joint projects more difficult than necessary.</p>
 <div id="open-science" class="section level2">
 <h2>Open Science</h2>
-<p>Recently a lot of our research activities has been oriented towards the <a href="//www.spoman-os.org">SPOMAN Open Science collaboration</a>, and the ongoing projects are available on the <a href="//osf.io/wudyt">Open Science Framework (osf.io)</a>. In most cases, the methods and results are thoroughly described for each project. However, since a lot of the data analysis is currently performed in spreadsheet software, the data analysis is not very transparent and reproducible. A recent paper by Lowndes et al. discusses exactly this issue, and describes how the use of <a href="//www.r-project.org">R</a> and <a href="//github.com">Github</a> has allowed them to do better science in less time.<span class="citation"><sup>1</sup></span></p>
+<p>Recently a lot of our research activities has been oriented towards the <a href="//www.spoman-os.org">SPOMAN Open Science collaboration</a>, and the ongoing projects are available on the <a href="//osf.io/wudyt">Open Science Framework (osf.io)</a>. In most cases, the methods and results are thoroughly described for each project. However, since a lot of the data analysis is currently performed in spreadsheet software, the data analysis is not very transparent and reproducible. <span class="citation">Lowndes et al. (2017)</span> discusses exactly this issue, and describes how the use of <a href="//www.r-project.org">R</a> and <a href="//github.com">GitHub</a> has allowed them to do better science in less time.</p>
 <p>For a while I have been considering how to apply this thinking to our research. I am confident that it could be made more efficient and well-documented if R was adopted as a general tool for data analysis. I will try to give my reasoning for this below.</p>
 <div id="clear-and-well-documented-analysis-in-r-markdown" class="section level3">
 <h3>Clear and well-documented analysis in R Markdown</h3>
@@ -236,7 +236,7 @@
 <li>What calculations are performed? Which cells contain data and formulas? You have to manually click around to know.</li>
 <li>There is no easy way to reproduce an analysis, without having to enter new formulas, making new assumptions etc.</li>
 </ul>
-<p>R provides a very nice feature which can alleviate these challenges, and make an analysis easier to understand and reproduce: <a href="//rmarkdown.rstudio.com">R Markdown documents</a>. <em>This post is written in R Markdown to demonstrate some of the capabilities (you can go <a href="https://github.com/emiltb/emil.tbjerglund.dk/tree/master/content/post">here</a> to see the code)</em>. It makes it easy to alternate between descriptive paragraphs, describing the analysis and intermediate conclusions, and then R code, where scripts are used to load, modify and plot data.</p>
+<p>R provides a very nice feature which can alleviate these challenges, and make an analysis easier to understand and reproduce: <a href="//rmarkdown.rstudio.com">R Markdown documents</a>. <em>This post is written in R Markdown to demonstrate some of the capabilities (you can go <a href="https://github.com/emiltb/emil.tbjerglund.dk/tree/master/content/post">here</a> to see the code)</em><a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>. It makes it easy to alternate between descriptive paragraphs, describing the analysis and intermediate conclusions, and then R code, where scripts are used to load, modify and plot data.</p>
 <p>We could for example provide the script for loading a dataset and directly show how a few of the variables are modified. This is demonstrated here for R’s built-in <code>mtcars</code> dataset.</p>
 <pre class="r"><code>library(tidyverse)
 dataset &lt;- mtcars %&gt;% 
@@ -246,7 +246,7 @@ dataset &lt;- mtcars %&gt;%
                                             Automatic = &quot;0&quot;, 
                                             Manual = &quot;1&quot;)
     )
-knitr::kable(head(dataset), caption = &quot;The mtcars dataset contain data on 32 different cars&quot;)</code></pre>
+knitr::kable(head(dataset, 4), caption = &quot;The mtcars dataset contain data on 32 different cars&quot;)</code></pre>
 <table>
 <caption><span id="tab:unnamed-chunk-1">Table 1: </span>The mtcars dataset contain data on 32 different cars</caption>
 <thead>
@@ -297,24 +297,6 @@ knitr::kable(head(dataset), caption = &quot;The mtcars dataset contain data on 3
 <td align="right">0</td>
 <td align="left">Automatic</td>
 </tr>
-<tr class="odd">
-<td align="left">Hornet Sportabout</td>
-<td align="right">7.950118</td>
-<td align="right">8</td>
-<td align="right">175</td>
-<td align="right">1.560350</td>
-<td align="right">0</td>
-<td align="left">Automatic</td>
-</tr>
-<tr class="even">
-<td align="left">Valiant</td>
-<td align="right">7.695034</td>
-<td align="right">6</td>
-<td align="right">105</td>
-<td align="right">1.569421</td>
-<td align="right">0</td>
-<td align="left">Automatic</td>
-</tr>
 </tbody>
 </table>
 <p>We can then plot our dataset, in a completely reproducible manner by a few lines of code. Anyone with the datafile and this script, would be able to produce this exact plot.</p>
@@ -322,30 +304,52 @@ knitr::kable(head(dataset), caption = &quot;The mtcars dataset contain data on 3
   ggplot(aes(x = wt, y = mpg, color = Transmission)) +
   geom_point() +
   labs(x = &quot;Weight (t)&quot;, y = &quot;Mileage (km/L)&quot;, title = &quot;Fuel economy&quot;)</code></pre>
-<p><img src="/post/2017-07-07-developing-an-r-package-for-a-research-group_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="/post/2017-07-07-open-science-tools-for-our-research-group_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 </div>
 <div id="reuse-of-work-through-an-r-package" class="section level3">
 <h3>Reuse of work through an R package</h3>
 <p>Take any given <a href="http://surfchem.dk/category/articles/">research project</a> in our group, and you will commonly find that we use X-ray Photoelectron Spectroscopy (XPS), Raman spectroscopy, Infrared spectroscopy, Ellipsommetry and various electrochemical techniques all the time. In essence, a handful of techniques produce the large majority of our data. Most of it is initially saved in proprietary formats and treated in the corresponding software, but it can all be exported as plain-text files (.csv, .txt). Wouldn’t it be nice to have a common framework to analyse and plot all data, for every project, regardless of the technique used? This is also possible in R by creating a package!</p>
 <blockquote>
-<p>Packages are the fundamental units of reproducible R code. They include reusable R functions, the documentation that describes how to use them, and sample data. <a href="//r-pkgs.had.co.nz/"><strong>R packages</strong> by Hadley Wickham</a></p>
+<p>Packages are the fundamental units of reproducible R code. They include reusable R functions, the documentation that describes how to use them, and sample data. <a href="//r-pkgs.had.co.nz/"><strong>R packages</strong>, <em>Hadley Wickham</em></a></p>
 </blockquote>
-<p>Initially, an R package for our group could contain functions to load the data from the above-mentioned techniques and clean it up, so that it is ready for analysis. We could then extend on this by providing often-used analysis as functions, shortcuts for making commonly used plots etc. In this way code could easily be reused among members of the group, making our science more efficient. Having such a toolbox provided will also make it easier for new group members to get started with R.</p>
+<p>Initially, an R package for our group could contain functions to load the data from the above-mentioned techniques and clean it up, so that it is ready for analysis. We could then extend on this by providing often-used analyses as functions, shortcuts for making commonly used plots etc. In this way code could easily be reused among members of the group, making our science more efficient. Having such a toolbox provided along with some basic examples will also make it easier for new group members to get started with R.</p>
 </div>
 <div id="collaborative-todo-lists-and-dicussions-on-github" class="section level3">
-<h3>Collaborative todo-lists and dicussions on github</h3>
+<h3>Collaborative TODO-lists and dicussions on GitHub</h3>
+<p>When you have then made your R package, how is it then distributed among group members? To be truly efficient we need a tool that:</p>
+<ul>
+<li>Easily allows users to download the newest version of the package when using R.</li>
+<li>Allows for cooperation from many users, such that the maintainence and debugging the code is independent of any single person.</li>
+<li>Contains version control, such that users can append their own code to the project or modify other peoples code without fear of breaking stuff.</li>
+</ul>
+<p>All this is possible, if the package is made publically available as a <a href="https://en.wikipedia.org/wiki/Git">Git repository</a> . As of writing this, I have created an empty R package that is available <a href="https://github.com/SPOMAN/osc">on GitHub</a>, and the hope is that in due time it will be populated with lots of useful stuff for our group members. This solution makes the code publically available and very easy to use in R.</p>
+<pre class="r"><code># Install the package from Github using the Devtools package
+install.packages(&#39;devtools&#39;)
+devtools::install_github(&#39;SPOMAN/osc&#39;)
+
+# Load the &#39;osc&#39; package
+library(osc)</code></pre>
+<p>Github further allows users and developers to <a href="https://github.com/SPOMAN/osc/issues">track <em>issues</em></a>. This can be used as a TODO-list for the project to report bugs in the code or request missing features. This means, that even R users that mainly use the scripts, and might be unable to add new functionality themselves, has the possibility to help improve the package.</p>
 </div>
 </div>
-<div id="barriers-for-doing-this" class="section level2">
-<h2>Barriers for doing this</h2>
+<div id="key-steps-for-implementation" class="section level2">
+<h2>Key steps for implementation</h2>
+<p>It is clear, that there is an inital barrier to overcome, if the implementation of R as the primary analysis tool in our group is to succeed. Currently many students in our group have very limited experience in programming, but I believe that by implementing core tools in an accessible environment this can be overcome. Teaching R to new users was discussed extensively at the useR!2017 conference I attended last week. Some materials are available in the excellent talk <a href="https://github.com/mine-cetinkaya-rundel/2017-07-05-teach-ds-to-new-user">“Teaching data science to new useRs” by Mine Cetinkaya-Rundel</a>.</p>
+<p>In the long run I am confident that the extra workload that must be put into making a well-crafted R package will pay off, once the scientific analysis can be performed more efficient and reproducibly by every member of our research group.</p>
 <div id="references" class="section level3 unnumbered">
 <h3>References</h3>
 <div id="refs" class="references">
 <div id="ref-Lowndes2017">
-<p>(1) Lowndes, J. S. S.; Best, B. D.; Scarborough, C.; Afflerbach, J. C.; Frazier, M. R.; O’Hara, C. C.; Jiang, N.; Halpern, B. S. Our path to better science in less time using open data science tools. <em>Nature Ecology &amp; Evolution</em> <strong>2017</strong>, <em>1</em> (6), 0160 DOI: <a href="https://doi.org/10.1038/s41559-017-0160">10.1038/s41559-017-0160</a>.</p>
+<p>Lowndes, Julia S. Stewart, Benjamin D. Best, Courtney Scarborough, Jamie C. Afflerbach, Melanie R. Frazier, Casey C. O’Hara, Ning Jiang, and Benjamin S. Halpern. 2017. “Our path to better science in less time using open data science tools.” <em>Nature Ecology &amp; Evolution</em> 1 (6): 0160. doi:<a href="https://doi.org/10.1038/s41559-017-0160">10.1038/s41559-017-0160</a>.</p>
 </div>
 </div>
 </div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Fun fact: R Markdown can also be used to product PDFs, Word documents or even slideshows!<a href="#fnref1">↩</a></p></li>
+</ol>
 </div>
 
     </div>

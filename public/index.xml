@@ -1,14 +1,151 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>emiltb on emiltb</title>
+    <title>Open and Efficient Research on Open and Efficient Research</title>
     <link>/</link>
-    <description>Recent content in emiltb on emiltb</description>
+    <description>Recent content in Open and Efficient Research on Open and Efficient Research</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2017 Emil Tveden Bjerglund</copyright>
     <lastBuildDate>Wed, 20 Apr 2016 00:00:00 +0000</lastBuildDate>
     <atom:link href="/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Open Science tools for our research group</title>
+      <link>/post/open-science-tools-for-our-research-group/</link>
+      <pubDate>Fri, 07 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/post/open-science-tools-for-our-research-group/</guid>
+      <description>&lt;p&gt;Currently in the &lt;a href=&#34;//surfchem.dk&#34;&gt;Organic Surface Chemistry group&lt;/a&gt;, which I am part of, there are large variations between group members when it comes to the tools used for data analysis. Some people feel most comfortable in spreadsheet programs such as Origin or Excel, while others rely on a mix of Matlab, R, Python or other tools. We use a lot of different experimental techniques in our research, and therefore generate data in a lot of different formats. Different workflows of varying efficiency often makes joint projects more difficult than necessary.&lt;/p&gt;
+&lt;div id=&#34;open-science&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Open Science&lt;/h2&gt;
+&lt;p&gt;Recently a lot of our research activities has been oriented towards the &lt;a href=&#34;//www.spoman-os.org&#34;&gt;SPOMAN Open Science collaboration&lt;/a&gt;, and the ongoing projects are available on the &lt;a href=&#34;//osf.io/wudyt&#34;&gt;Open Science Framework (osf.io)&lt;/a&gt;. In most cases, the methods and results are thoroughly described for each project. However, since a lot of the data analysis is currently performed in spreadsheet software, the data analysis is not very transparent and reproducible. &lt;span class=&#34;citation&#34;&gt;Lowndes et al. (2017)&lt;/span&gt; discusses exactly this issue, and describes how the use of &lt;a href=&#34;//www.r-project.org&#34;&gt;R&lt;/a&gt; and &lt;a href=&#34;//github.com&#34;&gt;GitHub&lt;/a&gt; has allowed them to do better science in less time.&lt;/p&gt;
+&lt;p&gt;For a while I have been considering how to apply this thinking to our research. I am confident that it could be made more efficient and well-documented if R was adopted as a general tool for data analysis. I will try to give my reasoning for this below.&lt;/p&gt;
+&lt;div id=&#34;clear-and-well-documented-analysis-in-r-markdown&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Clear and well-documented analysis in R Markdown&lt;/h3&gt;
+&lt;p&gt;If you recieve a spreadsheet from someone, containing some data analysis it can be very hard to decipher the thinking of the original author (and to be honest, analysis done by yourself 6 monts ago, might aswell be done by a complete stranger). Some of the challenges are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;There is no connection to the original data. How did the data come from your scientific equipment and into the spreadsheet? Was it in any way altered previously?&lt;/li&gt;
+&lt;li&gt;What calculations are performed? Which cells contain data and formulas? You have to manually click around to know.&lt;/li&gt;
+&lt;li&gt;There is no easy way to reproduce an analysis, without having to enter new formulas, making new assumptions etc.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;R provides a very nice feature which can alleviate these challenges, and make an analysis easier to understand and reproduce: &lt;a href=&#34;//rmarkdown.rstudio.com&#34;&gt;R Markdown documents&lt;/a&gt;. &lt;em&gt;This post is written in R Markdown to demonstrate some of the capabilities (you can go &lt;a href=&#34;https://github.com/emiltb/emil.tbjerglund.dk/tree/master/content/post&#34;&gt;here&lt;/a&gt; to see the code)&lt;/em&gt;&lt;a href=&#34;#fn1&#34; class=&#34;footnoteRef&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;. It makes it easy to alternate between descriptive paragraphs, describing the analysis and intermediate conclusions, and then R code, where scripts are used to load, modify and plot data.&lt;/p&gt;
+&lt;p&gt;We could for example provide the script for loading a dataset and directly show how a few of the variables are modified. This is demonstrated here for R’s built-in &lt;code&gt;mtcars&lt;/code&gt; dataset.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)
+dataset &amp;lt;- mtcars %&amp;gt;% 
+  mutate(wt = wt*0.45359,      # Convert lbs to tons
+         mpg = mpg * 0.42514,  # Convert mpg to km/L
+         Transmission = forcats::fct_recode(as.factor(am), 
+                                            Automatic = &amp;quot;0&amp;quot;, 
+                                            Manual = &amp;quot;1&amp;quot;)
+    )
+knitr::kable(head(dataset, 4), caption = &amp;quot;The mtcars dataset contain data on 32 different cars&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;caption&gt;&lt;span id=&#34;tab:unnamed-chunk-1&#34;&gt;Table 1: &lt;/span&gt;The mtcars dataset contain data on 32 different cars&lt;/caption&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;left&#34;&gt;car&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;mpg&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;cyl&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;hp&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;wt&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;am&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;Transmission&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Mazda RX4&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8.927940&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;110&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.188406&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Manual&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Mazda RX4 Wag&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8.927940&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;110&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.304071&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Manual&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Datsun 710&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9.693192&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;4&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;93&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.052329&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Manual&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Hornet 4 Drive&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9.097996&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;110&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.458292&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Automatic&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;We can then plot our dataset, in a completely reproducible manner by a few lines of code. Anyone with the datafile and this script, would be able to produce this exact plot.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;dataset %&amp;gt;%  
+  ggplot(aes(x = wt, y = mpg, color = Transmission)) +
+  geom_point() +
+  labs(x = &amp;quot;Weight (t)&amp;quot;, y = &amp;quot;Mileage (km/L)&amp;quot;, title = &amp;quot;Fuel economy&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-07-07-open-science-tools-for-our-research-group_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;reuse-of-work-through-an-r-package&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Reuse of work through an R package&lt;/h3&gt;
+&lt;p&gt;Take any given &lt;a href=&#34;http://surfchem.dk/category/articles/&#34;&gt;research project&lt;/a&gt; in our group, and you will commonly find that we use X-ray Photoelectron Spectroscopy (XPS), Raman spectroscopy, Infrared spectroscopy, Ellipsommetry and various electrochemical techniques all the time. In essence, a handful of techniques produce the large majority of our data. Most of it is initially saved in proprietary formats and treated in the corresponding software, but it can all be exported as plain-text files (.csv, .txt). Wouldn’t it be nice to have a common framework to analyse and plot all data, for every project, regardless of the technique used? This is also possible in R by creating a package!&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Packages are the fundamental units of reproducible R code. They include reusable R functions, the documentation that describes how to use them, and sample data. &lt;a href=&#34;//r-pkgs.had.co.nz/&#34;&gt;&lt;strong&gt;R packages&lt;/strong&gt;, &lt;em&gt;Hadley Wickham&lt;/em&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Initially, an R package for our group could contain functions to load the data from the above-mentioned techniques and clean it up, so that it is ready for analysis. We could then extend on this by providing often-used analyses as functions, shortcuts for making commonly used plots etc. In this way code could easily be reused among members of the group, making our science more efficient. Having such a toolbox provided along with some basic examples will also make it easier for new group members to get started with R.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;collaborative-todo-lists-and-dicussions-on-github&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Collaborative TODO-lists and dicussions on GitHub&lt;/h3&gt;
+&lt;p&gt;When you have then made your R package, how is it then distributed among group members? To be truly efficient we need a tool that:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Easily allows users to download the newest version of the package when using R.&lt;/li&gt;
+&lt;li&gt;Allows for cooperation from many users, such that the maintainence and debugging the code is independent of any single person.&lt;/li&gt;
+&lt;li&gt;Contains version control, such that users can append their own code to the project or modify other peoples code without fear of breaking stuff.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;All this is possible, if the package is made publically available as a &lt;a href=&#34;https://en.wikipedia.org/wiki/Git&#34;&gt;Git repository&lt;/a&gt; . As of writing this, I have created an empty R package that is available &lt;a href=&#34;https://github.com/SPOMAN/osc&#34;&gt;on GitHub&lt;/a&gt;, and the hope is that in due time it will be populated with lots of useful stuff for our group members. This solution makes the code publically available and very easy to use in R.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Install the package from Github using the Devtools package
+install.packages(&amp;#39;devtools&amp;#39;)
+devtools::install_github(&amp;#39;SPOMAN/osc&amp;#39;)
+
+# Load the &amp;#39;osc&amp;#39; package
+library(osc)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Github further allows users and developers to &lt;a href=&#34;https://github.com/SPOMAN/osc/issues&#34;&gt;track &lt;em&gt;issues&lt;/em&gt;&lt;/a&gt;. This can be used as a TODO-list for the project to report bugs in the code or request missing features. This means, that even R users that mainly use the scripts, and might be unable to add new functionality themselves, has the possibility to help improve the package.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;key-steps-for-implementation&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Key steps for implementation&lt;/h2&gt;
+&lt;p&gt;It is clear, that there is an inital barrier to overcome, if the implementation of R as the primary analysis tool in our group is to succeed. Currently many students in our group have very limited experience in programming, but I believe that by implementing core tools in an accessible environment this can be overcome. Teaching R to new users was discussed extensively at the useR!2017 conference I attended last week. Some materials are available in the excellent talk &lt;a href=&#34;https://github.com/mine-cetinkaya-rundel/2017-07-05-teach-ds-to-new-user&#34;&gt;“Teaching data science to new useRs” by Mine Cetinkaya-Rundel&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In the long run I am confident that the extra workload that must be put into making a well-crafted R package will pay off, once the scientific analysis can be performed more efficient and reproducibly by every member of our research group.&lt;/p&gt;
+&lt;div id=&#34;references&#34; class=&#34;section level3 unnumbered&#34;&gt;
+&lt;h3&gt;References&lt;/h3&gt;
+&lt;div id=&#34;refs&#34; class=&#34;references&#34;&gt;
+&lt;div id=&#34;ref-Lowndes2017&#34;&gt;
+&lt;p&gt;Lowndes, Julia S. Stewart, Benjamin D. Best, Courtney Scarborough, Jamie C. Afflerbach, Melanie R. Frazier, Casey C. O’Hara, Ning Jiang, and Benjamin S. Halpern. 2017. “Our path to better science in less time using open data science tools.” &lt;em&gt;Nature Ecology &amp;amp; Evolution&lt;/em&gt; 1 (6): 0160. doi:&lt;a href=&#34;https://doi.org/10.1038/s41559-017-0160&#34;&gt;10.1038/s41559-017-0160&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn1&#34;&gt;&lt;p&gt;Fun fact: R Markdown can also be used to product PDFs, Word documents or even slideshows!&lt;a href=&#34;#fnref1&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>R Beginner Workshop</title>

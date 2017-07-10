@@ -1,0 +1,90 @@
+---
+title: Open Science tools for our research group
+author: Emil Tveden Bjerglund
+date: '2017-07-07'
+slug: open-science-tools-for-our-research-group
+categories: [R, Open Science]
+tags: []
+bibliography: ../lib.bib
+#csl: ../csl/american-chemical-society-with-titles-doi-no-et-al.csl
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+carnames <- rownames(mtcars)
+mtcars <- as_tibble(mtcars) %>% mutate(car = carnames) %>% select(car, mpg, cyl, hp, wt, am)
+```
+
+
+Currently in the [Organic Surface Chemistry group](//surfchem.dk), which I am part of, there are large variations between group members when it comes to the tools used for data analysis. Some people feel most comfortable in spreadsheet programs such as Origin or Excel, while others rely on a mix of Matlab, R, Python or other tools. We use a lot of different experimental techniques in our research, and therefore generate data in a lot of different formats. Different workflows of varying efficiency often makes joint projects more difficult than necessary.
+
+## Open Science
+Recently a lot of our research activities has been oriented towards the [SPOMAN Open Science collaboration](//www.spoman-os.org), and the ongoing projects are available on the [Open Science Framework (osf.io)](//osf.io/wudyt). In most cases, the methods and results are thoroughly described for each project. However, since a lot of the data analysis is currently performed in spreadsheet software, the data analysis is not very transparent and reproducible. @Lowndes2017 discusses exactly this issue, and describes how the use of [R](//www.r-project.org) and [GitHub](//github.com) has allowed them to do better science in less time.
+
+For a while I have been considering how to apply this thinking to our research. I am confident that it could be made more efficient and well-documented if R was adopted as a general tool for data analysis. I will try to give my reasoning for this below.
+
+### Clear and well-documented analysis in R Markdown
+If you recieve a spreadsheet from someone, containing some data analysis it can be very hard to decipher the thinking of the original author (and to be honest, analysis done by yourself 6 monts ago, might aswell be done by a complete stranger). Some of the challenges are:
+
+* There is no connection to the original data. How did the data come from your scientific equipment and into the spreadsheet? Was it in any way altered previously?
+* What calculations are performed? Which cells contain data and formulas? You have to manually click around to know.
+* There is no easy way to reproduce an analysis, without having to enter new formulas, making new assumptions etc.
+
+R provides a very nice feature which can alleviate these challenges, and make an analysis easier to understand and reproduce: [R Markdown documents](//rmarkdown.rstudio.com). _This post is written in R Markdown to demonstrate some of the capabilities (you can go [here](https://github.com/emiltb/emil.tbjerglund.dk/tree/master/content/post) to see the code)_^[Fun fact: R Markdown can also be used to product PDFs, Word documents or even slideshows!]. It makes it easy to alternate between descriptive paragraphs, describing the analysis and intermediate conclusions, and then R code, where scripts are used to load, modify and plot data.
+
+We could for example provide the script for loading a dataset and directly show how a few of the variables are modified. This is demonstrated here for R's built-in `mtcars` dataset.
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+dataset <- mtcars %>% 
+  mutate(wt = wt*0.45359,      # Convert lbs to tons
+         mpg = mpg * 0.42514,  # Convert mpg to km/L
+         Transmission = forcats::fct_recode(as.factor(am), 
+                                            Automatic = "0", 
+                                            Manual = "1")
+    )
+knitr::kable(head(dataset, 4), caption = "The mtcars dataset contain data on 32 different cars")
+```
+
+We can then plot our dataset, in a completely reproducible manner by a few lines of code. Anyone with the datafile and this script, would be able to produce this exact plot.
+
+```{r fig.height=3, message=FALSE, warning=FALSE}
+dataset %>%  
+  ggplot(aes(x = wt, y = mpg, color = Transmission)) +
+  geom_point() +
+  labs(x = "Weight (t)", y = "Mileage (km/L)", title = "Fuel economy")
+```
+
+### Reuse of work through an R package
+Take any given [research project](http://surfchem.dk/category/articles/) in our group, and you will commonly find that we use X-ray Photoelectron Spectroscopy (XPS), Raman spectroscopy, Infrared spectroscopy, Ellipsommetry and various electrochemical techniques all the time. In essence, a handful of techniques produce the large majority of our data. Most of it is initially saved in proprietary formats and treated in the corresponding software, but it can all be exported as plain-text files (.csv, .txt). Wouldn't it be nice to have a common framework to analyse and plot all data, for every project, regardless of the technique used? This is also possible in R by creating a package!
+
+> Packages are the fundamental units of reproducible R code. They include reusable R functions, the documentation that describes how to use them, and sample data. [**R packages**, _Hadley Wickham_](//r-pkgs.had.co.nz/)
+
+Initially, an R package for our group could contain functions to load the data from the above-mentioned techniques and clean it up, so that it is ready for analysis. We could then extend on this by providing often-used analyses as functions, shortcuts for making commonly used plots etc. In this way code could easily be reused among members of the group, making our science more efficient. Having such a toolbox provided along with some basic examples will also make it easier for new group members to get started with R.
+
+### Collaborative TODO-lists and dicussions on GitHub
+When you have then made your R package, how is it then distributed among group members? To be truly efficient we need a tool that:
+
+* Easily allows users to download the newest version of the package when using R.
+* Allows for cooperation from many users, such that the maintainence and debugging the code is independent of any single person.
+* Contains version control, such that users can append their own code to the project or modify other peoples code without fear of breaking stuff.
+
+All this is possible, if the package is made publically available as a [Git repository](https://en.wikipedia.org/wiki/Git) . As of writing this, I have created an empty R package that is available [on GitHub](https://github.com/SPOMAN/osc), and the hope is that in due time it will be populated with lots of useful stuff for our group members. This solution makes the code publically available and very easy to use in R.
+
+```{r eval=FALSE}
+# Install the package from Github using the Devtools package
+install.packages('devtools')
+devtools::install_github('SPOMAN/osc')
+
+# Load the 'osc' package
+library(osc)
+```
+
+Github further allows users and developers to [track _issues_](https://github.com/SPOMAN/osc/issues). This can be used as a TODO-list for the project to report bugs in the code or request missing features. This means, that even R users that mainly use the scripts, and might be unable to add new functionality themselves, has the possibility to help improve the package.
+
+## Key steps for implementation
+It is clear, that there is an inital barrier to overcome, if the implementation of R as the primary analysis tool in our group is to succeed. Currently many students in our group have very limited experience in programming, but I believe that by implementing core tools in an accessible environment this can be overcome. Teaching R to new users was discussed extensively at the useR!2017 conference I attended last week. Some materials are available in the excellent talk ["Teaching data science to new useRs" by Mine Cetinkaya-Rundel](https://github.com/mine-cetinkaya-rundel/2017-07-05-teach-ds-to-new-user). 
+
+In the long run I am confident that the extra workload that must be put into making a well-crafted R package will pay off, once the scientific analysis can be performed more efficient and reproducibly by every member of our research group. 
+
+### References

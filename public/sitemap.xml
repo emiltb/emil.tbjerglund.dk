@@ -5,6 +5,15 @@
     
     <url>
     
+      <loc>/post/open-science-tools-for-our-research-group/</loc>
+      <lastmod>2017-07-07T00:00:00+00:00</lastmod>
+    </url>
+    
+  
+    
+    
+    <url>
+    
       <loc>/talk/201706-r-workshop/</loc>
       <lastmod>2017-06-20T00:00:00+00:00</lastmod>
     </url>
@@ -114,18 +123,8 @@
     
     <url>
     
-      <loc>/publication_types/</loc>
-      <lastmod>2016-06-14T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/tags/</loc>
-      <lastmod>2017-01-01T00:00:00+00:00</lastmod>
+      <loc>/categories/open-science/</loc>
+      <lastmod>2017-07-07T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     
@@ -136,6 +135,36 @@
     
       <loc>/</loc>
       <lastmod>2016-04-20T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    
+    <url>
+    
+      <loc>/publication_types/</loc>
+      <lastmod>2016-06-14T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    
+    <url>
+    
+      <loc>/categories/r/</loc>
+      <lastmod>2017-07-07T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    
+    <url>
+    
+      <loc>/tags/</loc>
+      <lastmod>2017-01-01T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     
