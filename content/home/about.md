@@ -19,12 +19,12 @@ weight = 1
 
 # List your qualifications (such as academic degrees).
 [[education.courses]]
-  course = "M.Sc. in Nanoscience"
+  course = "M.Sc. in nanoscience"
   institution = "Aarhus University"
   year = 2016
 
 [[education.courses]]
-  course = "B.Sc. in Nanoscience"
+  course = "B.Sc. in nanoscience"
   institution = "Aarhus University"
   year = 2013
 
@@ -32,4 +32,4 @@ weight = 1
 +++
 
 # Biography
-I am a Ph.d.-student in Nanoscience at the Organic Surface Chemistry group at iNANO, Aarhus University. My current research is in electrochemical production and functionalisation of graphene for use in polymer composites. I also enjoy discussing Open Science, and try engage more open and clear communication of research and analysis methods.
+I am a Ph.d.-student in Nanoscience at the Organic Surface Chemistry group at iNANO, Aarhus University. My current research is in electrochemical production and functionalisation of graphene for use in polymer composites. I also enjoy discussing Open Science, and try engage more open and clear communication of research and analysis methods. 
