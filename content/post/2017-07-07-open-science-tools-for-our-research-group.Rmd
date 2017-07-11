@@ -1,7 +1,7 @@
 ---
 title: Open Science tools for our research group
 author: Emil Tveden Bjerglund
-date: '2017-07-07'
+date: '2017-07-10'
 slug: open-science-tools-for-our-research-group
 categories: [R, Open Science]
 tags: []

@@ -19,12 +19,12 @@ weight = 1
 
 # List your qualifications (such as academic degrees).
 [[education.courses]]
-  course = "M.Sc. in nanoscience"
+  course = "M.Sc. in Nanoscience"
   institution = "Aarhus University"
   year = 2016
 
 [[education.courses]]
-  course = "B.Sc. in nanoscience"
+  course = "B.Sc. in Nanoscience"
   institution = "Aarhus University"
   year = 2013
 

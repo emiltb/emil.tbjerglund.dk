@@ -7,13 +7,13 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2017 Emil Tveden Bjerglund</copyright>
-    <lastBuildDate>Fri, 07 Jul 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 10 Jul 2017 00:00:00 +0000</lastBuildDate>
     <atom:link href="/categories/open-science/" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Open Science tools for our research group</title>
       <link>/post/open-science-tools-for-our-research-group/</link>
-      <pubDate>Fri, 07 Jul 2017 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 10 Jul 2017 00:00:00 +0000</pubDate>
       
       <guid>/post/open-science-tools-for-our-research-group/</guid>
       <description>&lt;p&gt;Currently in the &lt;a href=&#34;//surfchem.dk&#34;&gt;Organic Surface Chemistry group&lt;/a&gt;, there are large variations between our group members when it comes to the tools used for data analysis. Some people feel most comfortable in spreadsheet programs such as Origin or Excel, while others rely on a mix of Matlab, R, Python or other tools. We use a lot of different experimental techniques in our research, and therefore generate data in a lot of different formats. Different workflows of varying efficiency often makes joint projects more difficult than necessary.&lt;/p&gt;
