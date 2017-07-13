@@ -2,47 +2,56 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>2 on Open and Efficient Research</title>
-    <link>https://emil.tbjerglund.dk/publication_types/2/</link>
+    <link>/publication_types/2/</link>
     <description>Recent content in 2 on Open and Efficient Research</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2017 Emil Tveden Bjerglund</copyright>
-    <lastBuildDate>Tue, 14 Jun 2016 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 21 Jul 2016 00:00:00 +0000</lastBuildDate>
     <atom:link href="/publication_types/2/" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>Glycine buffered synthesis of layered iron(II)-iron(III) hydroxides (green rusts)</title>
+      <link>/publication/green-rust/</link>
+      <pubDate>Thu, 21 Jul 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/publication/green-rust/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Functionalizing Arrays of Transferred Monolayer Graphene on Insulating Surfaces by Bipolar Electrochemistry</title>
-      <link>https://emil.tbjerglund.dk/publication/graphene-array-functionalisation/</link>
+      <link>/publication/graphene-array-functionalisation/</link>
       <pubDate>Tue, 14 Jun 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://emil.tbjerglund.dk/publication/graphene-array-functionalisation/</guid>
+      <guid>/publication/graphene-array-functionalisation/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Controlled electropolymerisation of a carbazole-functionalised iron porphyrin electrocatalyst for CO$_2$ reduction</title>
-      <link>https://emil.tbjerglund.dk/publication/electropolymerised-carbazole/</link>
+      <link>/publication/electropolymerised-carbazole/</link>
       <pubDate>Sat, 16 Apr 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://emil.tbjerglund.dk/publication/electropolymerised-carbazole/</guid>
+      <guid>/publication/electropolymerised-carbazole/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Patterned Carboxylation of Graphene Using Scanning Electrochemical Microscopy</title>
-      <link>https://emil.tbjerglund.dk/publication/graphene-carboxylation-pattern/</link>
+      <link>/publication/graphene-carboxylation-pattern/</link>
       <pubDate>Tue, 07 Apr 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://emil.tbjerglund.dk/publication/graphene-carboxylation-pattern/</guid>
+      <guid>/publication/graphene-carboxylation-pattern/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Controlled Electrochemical Carboxylation of Graphene To Create a Versatile Chemical Platform for Further Functionalization</title>
-      <link>https://emil.tbjerglund.dk/publication/graphene-carboxylation/</link>
+      <link>/publication/graphene-carboxylation/</link>
       <pubDate>Fri, 23 May 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://emil.tbjerglund.dk/publication/graphene-carboxylation/</guid>
+      <guid>/publication/graphene-carboxylation/</guid>
       <description></description>
     </item>
     

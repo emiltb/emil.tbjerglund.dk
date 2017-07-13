@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Recent &amp; Upcoming Talks on Open and Efficient Research</title>
-    <link>https://emil.tbjerglund.dk/talk/</link>
+    <link>/talk/</link>
     <description>Recent content in Recent &amp; Upcoming Talks on Open and Efficient Research</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
@@ -12,10 +12,10 @@
     
     <item>
       <title>R Beginner Workshop</title>
-      <link>https://emil.tbjerglund.dk/talk/201706-r-workshop/</link>
+      <link>/talk/201706-r-workshop/</link>
       <pubDate>Tue, 20 Jun 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://emil.tbjerglund.dk/talk/201706-r-workshop/</guid>
+      <guid>/talk/201706-r-workshop/</guid>
       <description>&lt;p&gt;I recently did a short workshop for R Beginners together with Anders Schmidt. Anders wrote a short blogpost about what we covered and the materials we used, which is available &lt;a href=&#34;https://andersschmidt.github.io/Rstat-course/&#34; target=&#34;_blank&#34;&gt;here&lt;/a&gt;. It was really interesting to use the &lt;a href=&#34;//learnr.rstudio.com&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;learnr&lt;/code&gt;&lt;/a&gt; package, and we will probably try to extend on this for future workshops.&lt;/p&gt;
 </description>
     </item>

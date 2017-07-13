@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Open and Efficient Research</title>
-    <link>https://emil.tbjerglund.dk/categories/</link>
+    <link>/categories/</link>
     <description>Recent content in Categories on Open and Efficient Research</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
@@ -11,19 +11,19 @@
     
     <item>
       <title>Open Science</title>
-      <link>https://emil.tbjerglund.dk/categories/open-science/</link>
+      <link>/categories/open-science/</link>
       <pubDate>Mon, 10 Jul 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://emil.tbjerglund.dk/categories/open-science/</guid>
+      <guid>/categories/open-science/</guid>
       <description></description>
     </item>
     
     <item>
       <title>R</title>
-      <link>https://emil.tbjerglund.dk/categories/r/</link>
-      <pubDate>Mon, 10 Jul 2017 00:00:00 +0000</pubDate>
+      <link>/categories/r/</link>
+      <pubDate>Wed, 12 Jul 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://emil.tbjerglund.dk/categories/r/</guid>
+      <guid>/categories/r/</guid>
       <description></description>
     </item>
     

@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Open and Efficient Research on Open and Efficient Research</title>
-    <link>https://emil.tbjerglund.dk/</link>
+    <link>/</link>
     <description>Recent content in Open and Efficient Research on Open and Efficient Research</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
@@ -11,11 +11,52 @@
     <atom:link href="/" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>Setting up an RStudio Server for teaching</title>
+      <link>/post/setting-up-an-rstudio-server-for-teaching/</link>
+      <pubDate>Wed, 12 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/post/setting-up-an-rstudio-server-for-teaching/</guid>
+      <description>&lt;p&gt;Installed ubuntu server 16.04 on an old laptop. After initial setup, login with the user created during install.&lt;/p&gt;
+
+&lt;p&gt;For good measure, install the updates. Well that didn&amp;rsquo;t work, since Ubuntu 16.04 apparantly has problems with my network card (&lt;a href=&#34;https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1586875&#34; target=&#34;_blank&#34;&gt;https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1586875&lt;/a&gt;). I did not find a way to resolve that.&lt;/p&gt;
+
+&lt;p&gt;Well, tried again with Ubuntu Server 17.04, which also did not help - at this point it is probably my knowledge on Linux systems that is the limiting factor. I instead installed the normal Ubuntu Desktop 17.04, and then both Wired and Wireless connections worked just fine.&lt;/p&gt;
+
+&lt;p&gt;I then followed this guide: &lt;a href=&#34;https://www.digitalocean.com/community/tutorials/how-to-set-up-r-on-ubuntu-14-04&#34; target=&#34;_blank&#34;&gt;https://www.digitalocean.com/community/tutorials/how-to-set-up-r-on-ubuntu-14-04&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;sudo nano /etc/apt/sources.list&lt;/code&gt; and added the line &lt;code&gt;deb https://cran.rstudio.com/bin/linux/ubuntu zesty/&lt;/code&gt; to the bottom. Add key by &lt;code&gt;sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9&lt;/code&gt; (&lt;a href=&#34;https://cran.rstudio.com/bin/linux/ubuntu/README.html&#34; target=&#34;_blank&#34;&gt;https://cran.rstudio.com/bin/linux/ubuntu/README.html&lt;/a&gt;). Save and run &lt;code&gt;sudo apt-get update&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;sudo apt-get install r-base&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get install gdebi-core
+wget https://download2.rstudio.org/rstudio-server-1.0.143-amd64.deb
+sudo gdebi rstudio-server-1.0.143-amd64.deb
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;After that, the Rstudio server was installed and running. I could go to &lt;ip&gt;:8787 on another computer on the local network and log in with my user.&lt;/p&gt;
+
+&lt;p&gt;As I wish to use this server for teaching, I need to make a bunch of packages, e.g. the tidyverse available for all users. So I start R on the server as a superuser by &lt;code&gt;sudo R&lt;/code&gt; and then run &lt;code&gt;install.packages(&#39;tidyverse&#39;, lib = &#39;/usr/local/lib/R/site-library/)&lt;/code&gt;. This takes a while, and the first times I did this some packages failed (rvest, httr, xml2, curl, openssl) due to missing dependencies. These were installed by&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get install libxml2-dev
+sudo apt-get install libcurl4-openssl-dev
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;After which the install of tidyverse progressed without errors&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo useradd -m andschmidt
+sudo passwd andsmidt # Supply 123abc
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To delete a user &lt;code&gt;sudo userdel andschmidt&lt;/code&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Open Science tools for our research group</title>
-      <link>https://emil.tbjerglund.dk/post/open-science-tools-for-our-research-group/</link>
+      <link>/post/open-science-tools-for-our-research-group/</link>
       <pubDate>Mon, 10 Jul 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://emil.tbjerglund.dk/post/open-science-tools-for-our-research-group/</guid>
+      <guid>/post/open-science-tools-for-our-research-group/</guid>
       <description>&lt;p&gt;Currently in the &lt;a href=&#34;//surfchem.dk&#34;&gt;Organic Surface Chemistry group&lt;/a&gt;, there are large variations between our group members when it comes to the tools used for data analysis. Some people feel most comfortable in spreadsheet programs such as Origin or Excel, while others rely on a mix of Matlab, R, Python or other tools. We use a lot of different experimental techniques in our research, and therefore generate data in a lot of different formats. Different workflows of varying efficiency often makes joint projects more difficult than necessary.&lt;/p&gt;
 &lt;div id=&#34;open-science&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Open Science&lt;/h2&gt;
@@ -101,7 +142,7 @@ knitr::kable(
   ggplot(aes(x = wt, y = mpg, color = Transmission)) +
   geom_point() +
   labs(x = &amp;quot;Weight (t)&amp;quot;, y = &amp;quot;Mileage (km/L)&amp;quot;, title = &amp;quot;Fuel economy&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://emil.tbjerglund.dk/post/2017-07-07-open-science-tools-for-our-research-group_files/figure-html/data-plot-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-07-07-open-science-tools-for-our-research-group_files/figure-html/data-plot-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;reuse-of-work-through-an-r-package&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Reuse of work through an R package&lt;/h3&gt;
@@ -153,57 +194,66 @@ library(osc)&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>R Beginner Workshop</title>
-      <link>https://emil.tbjerglund.dk/talk/201706-r-workshop/</link>
+      <link>/talk/201706-r-workshop/</link>
       <pubDate>Tue, 20 Jun 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://emil.tbjerglund.dk/talk/201706-r-workshop/</guid>
+      <guid>/talk/201706-r-workshop/</guid>
       <description>&lt;p&gt;I recently did a short workshop for R Beginners together with Anders Schmidt. Anders wrote a short blogpost about what we covered and the materials we used, which is available &lt;a href=&#34;https://andersschmidt.github.io/Rstat-course/&#34; target=&#34;_blank&#34;&gt;here&lt;/a&gt;. It was really interesting to use the &lt;a href=&#34;//learnr.rstudio.com&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;learnr&lt;/code&gt;&lt;/a&gt; package, and we will probably try to extend on this for future workshops.&lt;/p&gt;
 </description>
     </item>
     
     <item>
+      <title>Glycine buffered synthesis of layered iron(II)-iron(III) hydroxides (green rusts)</title>
+      <link>/publication/green-rust/</link>
+      <pubDate>Thu, 21 Jul 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/publication/green-rust/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Functionalizing Arrays of Transferred Monolayer Graphene on Insulating Surfaces by Bipolar Electrochemistry</title>
-      <link>https://emil.tbjerglund.dk/publication/graphene-array-functionalisation/</link>
+      <link>/publication/graphene-array-functionalisation/</link>
       <pubDate>Tue, 14 Jun 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://emil.tbjerglund.dk/publication/graphene-array-functionalisation/</guid>
+      <guid>/publication/graphene-array-functionalisation/</guid>
       <description></description>
     </item>
     
     <item>
       <title>About</title>
-      <link>https://emil.tbjerglund.dk/about/</link>
+      <link>/about/</link>
       <pubDate>Thu, 05 May 2016 21:48:51 -0700</pubDate>
       
-      <guid>https://emil.tbjerglund.dk/about/</guid>
+      <guid>/about/</guid>
       <description>&lt;p&gt;This is a &amp;ldquo;hello world&amp;rdquo; example website for the &lt;a href=&#34;https://github.com/rstudio/blogdown&#34; target=&#34;_blank&#34;&gt;&lt;strong&gt;blogdown&lt;/strong&gt;&lt;/a&gt; package. The theme was forked from &lt;a href=&#34;https://github.com/jrutheiser/hugo-lithium-theme&#34; target=&#34;_blank&#34;&gt;@jrutheiser/hugo-lithium-theme&lt;/a&gt; and modified by &lt;a href=&#34;https://github.com/yihui/hugo-lithium-theme&#34; target=&#34;_blank&#34;&gt;Yihui Xie&lt;/a&gt;.&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>Controlled electropolymerisation of a carbazole-functionalised iron porphyrin electrocatalyst for CO$_2$ reduction</title>
-      <link>https://emil.tbjerglund.dk/publication/electropolymerised-carbazole/</link>
+      <link>/publication/electropolymerised-carbazole/</link>
       <pubDate>Sat, 16 Apr 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://emil.tbjerglund.dk/publication/electropolymerised-carbazole/</guid>
+      <guid>/publication/electropolymerised-carbazole/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Patterned Carboxylation of Graphene Using Scanning Electrochemical Microscopy</title>
-      <link>https://emil.tbjerglund.dk/publication/graphene-carboxylation-pattern/</link>
+      <link>/publication/graphene-carboxylation-pattern/</link>
       <pubDate>Tue, 07 Apr 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://emil.tbjerglund.dk/publication/graphene-carboxylation-pattern/</guid>
+      <guid>/publication/graphene-carboxylation-pattern/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Controlled Electrochemical Carboxylation of Graphene To Create a Versatile Chemical Platform for Further Functionalization</title>
-      <link>https://emil.tbjerglund.dk/publication/graphene-carboxylation/</link>
+      <link>/publication/graphene-carboxylation/</link>
       <pubDate>Fri, 23 May 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://emil.tbjerglund.dk/publication/graphene-carboxylation/</guid>
+      <guid>/publication/graphene-carboxylation/</guid>
       <description></description>
     </item>
     
