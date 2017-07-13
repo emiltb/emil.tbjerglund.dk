@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Publications on Open and Efficient Research</title>
-    <link>/publication/</link>
+    <link>https://emil.tbjerglund.dk/publication/</link>
     <description>Recent content in Publications on Open and Efficient Research</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
@@ -12,37 +12,37 @@
     
     <item>
       <title>Functionalizing Arrays of Transferred Monolayer Graphene on Insulating Surfaces by Bipolar Electrochemistry</title>
-      <link>/publication/graphene-array-functionalisation/</link>
+      <link>https://emil.tbjerglund.dk/publication/graphene-array-functionalisation/</link>
       <pubDate>Tue, 14 Jun 2016 00:00:00 +0000</pubDate>
       
-      <guid>/publication/graphene-array-functionalisation/</guid>
+      <guid>https://emil.tbjerglund.dk/publication/graphene-array-functionalisation/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Controlled electropolymerisation of a carbazole-functionalised iron porphyrin electrocatalyst for CO$_2$ reduction</title>
-      <link>/publication/electropolymerised-carbazole/</link>
+      <link>https://emil.tbjerglund.dk/publication/electropolymerised-carbazole/</link>
       <pubDate>Sat, 16 Apr 2016 00:00:00 +0000</pubDate>
       
-      <guid>/publication/electropolymerised-carbazole/</guid>
+      <guid>https://emil.tbjerglund.dk/publication/electropolymerised-carbazole/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Patterned Carboxylation of Graphene Using Scanning Electrochemical Microscopy</title>
-      <link>/publication/graphene-carboxylation-pattern/</link>
+      <link>https://emil.tbjerglund.dk/publication/graphene-carboxylation-pattern/</link>
       <pubDate>Tue, 07 Apr 2015 00:00:00 +0000</pubDate>
       
-      <guid>/publication/graphene-carboxylation-pattern/</guid>
+      <guid>https://emil.tbjerglund.dk/publication/graphene-carboxylation-pattern/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Controlled Electrochemical Carboxylation of Graphene To Create a Versatile Chemical Platform for Further Functionalization</title>
-      <link>/publication/graphene-carboxylation/</link>
+      <link>https://emil.tbjerglund.dk/publication/graphene-carboxylation/</link>
       <pubDate>Fri, 23 May 2014 00:00:00 +0000</pubDate>
       
-      <guid>/publication/graphene-carboxylation/</guid>
+      <guid>https://emil.tbjerglund.dk/publication/graphene-carboxylation/</guid>
       <description></description>
     </item>
     

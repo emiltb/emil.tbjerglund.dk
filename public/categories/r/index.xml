@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>R on Open and Efficient Research</title>
-    <link>/categories/r/</link>
+    <link>https://emil.tbjerglund.dk/categories/r/</link>
     <description>Recent content in R on Open and Efficient Research</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
@@ -12,10 +12,10 @@
     
     <item>
       <title>Open Science tools for our research group</title>
-      <link>/post/open-science-tools-for-our-research-group/</link>
+      <link>https://emil.tbjerglund.dk/post/open-science-tools-for-our-research-group/</link>
       <pubDate>Mon, 10 Jul 2017 00:00:00 +0000</pubDate>
       
-      <guid>/post/open-science-tools-for-our-research-group/</guid>
+      <guid>https://emil.tbjerglund.dk/post/open-science-tools-for-our-research-group/</guid>
       <description>&lt;p&gt;Currently in the &lt;a href=&#34;//surfchem.dk&#34;&gt;Organic Surface Chemistry group&lt;/a&gt;, there are large variations between our group members when it comes to the tools used for data analysis. Some people feel most comfortable in spreadsheet programs such as Origin or Excel, while others rely on a mix of Matlab, R, Python or other tools. We use a lot of different experimental techniques in our research, and therefore generate data in a lot of different formats. Different workflows of varying efficiency often makes joint projects more difficult than necessary.&lt;/p&gt;
 &lt;div id=&#34;open-science&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Open Science&lt;/h2&gt;
@@ -101,7 +101,7 @@ knitr::kable(
   ggplot(aes(x = wt, y = mpg, color = Transmission)) +
   geom_point() +
   labs(x = &amp;quot;Weight (t)&amp;quot;, y = &amp;quot;Mileage (km/L)&amp;quot;, title = &amp;quot;Fuel economy&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2017-07-07-open-science-tools-for-our-research-group_files/figure-html/data-plot-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://emil.tbjerglund.dk/post/2017-07-07-open-science-tools-for-our-research-group_files/figure-html/data-plot-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;reuse-of-work-through-an-r-package&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Reuse of work through an R package&lt;/h3&gt;
