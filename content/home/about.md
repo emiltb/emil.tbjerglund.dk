@@ -33,8 +33,3 @@ weight = 1
 
 # Biography
 I am a Ph.d.-student in Nanoscience at the Organic Surface Chemistry group at iNANO, Aarhus University. My current research is in electrochemical production and functionalisation of graphene for use in polymer composites. I also enjoy discussing Open Science, and try engage more open and clear communication of research and analysis methods.
-
-<div w3-include-html="http://www.tbjerglund.dk/gettwitter.php"></div>
-<script type="text/javascript">
-    w3IncludeHTML();
-</script>
