@@ -13,6 +13,7 @@ One of the best tools I have encountered for analysing such datasets is [HyperSp
 
 <video width="100%" controls autoplay loop>
   <source src="/img/Hyperspy.webm" type="video/webm">
+  <source src="/img/Hyperspy.mp4" type="video/mp4">
 Your browser does not support the video tag.
 </video>
 
