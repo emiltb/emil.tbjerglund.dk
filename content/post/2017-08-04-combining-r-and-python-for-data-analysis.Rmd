@@ -16,7 +16,7 @@ One of the best tools I have encountered for analysing such datasets is [HyperSp
 Your browser does not support the video tag.
 </video>
 
-Now, since HyperSpy is a Python library this obviously brings some headaches, when my preferred analysis tool is R. I could do the entire analysis in a [Jupyter Notebook](http://jupyter.org/), and use matplotlib to generate pretty figures of the results. EDX data is only a small part of the data I work with, and all other data is analysed and plottd in R Markdown documents. This means, that I could quickly end up producing figures with inconsistent looks when displayed alongside other data.
+Now, since HyperSpy is a Python library this obviously brings some headaches, when my preferred analysis tool is R. I could do the entire analysis in a [Jupyter Notebook](http://jupyter.org/), and use matplotlib to generate pretty figures of the results. However, EDX data is only a small part of the data I work with, and all other data is analysed and plotted in R Markdown documents. This means, that I could quickly end up producing figures with inconsistent looks when displayed alongside other data.
 
 Fortunately it is possible to run Python code in an R Markdown document by [using a different language engine](http://rmarkdown.rstudio.com/authoring_knitr_engines.html). This means that I can load HyperSpy from my Rmd file, run the Python code for the analysis, and then continue in a new code chunk containing R code. (Note that ' should be replaced by ` below).
 ```
