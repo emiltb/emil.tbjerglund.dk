@@ -1,0 +1,26 @@
+---
+title: Interactive data analysis using shinyGadgets
+author: ~
+date: '2017-07-22'
+slug: interactive-data-analysis-using-shinygadgets
+categories: [R]
+tags: [shiny]
+draft: true
+---
+
+
+
+<p>One of the main points I made in my last post was, that one of the barriers of adopting R as the main analysis tool is that people need accesible tools that makes it easy to do routine jobs very easy. In this post I will demonstrate how shinyGadgets can be used interactively in an analysis.</p>
+<div id="routine-jobs-in-r-made-easy" class="section level1">
+<h1>Routine jobs in R made easy</h1>
+<p>One of the jobs, that is often performed in the group is integrating cyclic voltammetry peaks to know the charge passed in a single sweep, since that tells us how many electroactive groups that reacted during one sweep. This is not necessarily easy, since there often is a large background current that needs to be substracted. We previously have had other tools (self-made software, Origin, etc.) but this is not necessarily easy.</p>
+<p>I developed an R-function to make an easier interface to do this. Here a dataframe is loaded with the cv data, and that can then be passed to an <code>area()</code> function where the sweep number, integration limits and the order of the background polynomial can be specified.</p>
+<pre class="r"><code># library(osc)
+# file &lt;- system.file(&quot;extdata/cv/cv_example.txt&quot;, package = &quot;osc&quot;)
+# df &lt;- echem_read(file)
+# df &lt;- area(df, sw = 1, x1 = -1.8, x2 = -1.4, p = 3)
+# plot_area(df)</code></pre>
+<div id="using-interactive-shinygadgets-to-generate-analysis-code" class="section level2">
+<h2>Using interactive shinyGadgets to generate analysis code</h2>
+</div>
+</div>

@@ -7,8 +7,199 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2017 Emil Tveden Bjerglund</copyright>
-    <lastBuildDate>Wed, 12 Jul 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 04 Aug 2017 00:00:00 +0000</lastBuildDate>
     <atom:link href="/categories/r/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Combining R and Python for data analysis</title>
+      <link>/post/combining-r-and-python-for-data-analysis/</link>
+      <pubDate>Fri, 04 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/post/combining-r-and-python-for-data-analysis/</guid>
+      <description>&lt;p&gt;As part of my PhD work I characterise nanomaterials using &lt;a href=&#34;https://en.wikipedia.org/wiki/Energy-dispersive_X-ray_spectroscopy&#34;&gt;Energy-dispersive X-ray spectroscopy (EDX)&lt;/a&gt; in a Scanning Transmission Electron Microscope. We do this to obtain spatial information about the chemical composition of a sample on the nanoscale. Basically, an image is obtained by raster-scanning the electron beam and recording an X-ray spectrum in each position. This effectively gives a 3-dimensional dataset, where for each pixel a full spectrum is recorded. Since different elements emit X-rays at different energies, we can essentially make images of each element in a sample by extracting that part of the spectrum.&lt;/p&gt;
+&lt;p&gt;One of the best tools I have encountered for analysing such datasets is &lt;a href=&#34;http://hyperspy.org/&#34;&gt;HyperSpy&lt;/a&gt;. It is a Python library containing easy-to-use methods for interactively exploring and extracting features. As an example it is very easy to load a datafile and visualise the spectrum at each point.&lt;/p&gt;
+&lt;video width=&#34;100%&#34; controls autoplay loop&gt;
+&lt;source src=&#34;/img/Hyperspy.webm&#34; type=&#34;video/webm&#34;&gt; Your browser does not support the video tag.
+&lt;/video&gt;
+&lt;p&gt;Now, since HyperSpy is a Python library this obviously brings some headaches, when my preferred analysis tool is R. I could do the entire analysis in a &lt;a href=&#34;http://jupyter.org/&#34;&gt;Jupyter Notebook&lt;/a&gt;, and use matplotlib to generate pretty figures of the results. EDX data is only a small part of the data I work with, and all other data is analysed and plottd in R Markdown documents. This means, that I could quickly end up producing figures with inconsistent looks when displayed alongside other data.&lt;/p&gt;
+&lt;p&gt;Fortunately it is possible to run Python code in an R Markdown document by &lt;a href=&#34;http://rmarkdown.rstudio.com/authoring_knitr_engines.html&#34;&gt;using a different language engine&lt;/a&gt;. This means that I can load HyperSpy from my Rmd file, run the Python code for the analysis, and then continue in a new code chunk containing R code. (Note that ’ should be replaced by ` below).&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;#39;&amp;#39;&amp;#39;{python}
+#import hyperspy.api as hs
+&amp;#39;&amp;#39;&amp;#39;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The main drawback of doing it this way is that I am losing on the interactive explorative tools included in HyperSpy. For this reason my workflow has been to interactively explore and develop the Python code in a Jupyter Notebook, and then copy the final script to a Python chunk in an R Markdown document. I do this to keep the final product together and get a completely reproducible analysis in my R Markdown document.&lt;/p&gt;
+&lt;div id=&#34;transferring-data-between-python-and-r&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Transferring data between Python and R&lt;/h2&gt;
+&lt;p&gt;The datafile used in this example is a Bruker composite file (.bcf) containing a 512x512 pixel image with 2048 channels in the energy spectrum. I use HyperSpy to integrate specific elemental peaks in the spectrum. This produces maps of each element in the sample. I would like to plot these in R, as I am more proficient at fine-tuning the plots to my desired look in ggplot2. It is however not possible to directly transfer data from a Python code chunk to an R code chunk, so I need to save the data to the disk and and then load it again. A specific package, &lt;a href=&#34;https://blog.rstudio.com/2016/03/29/feather/&#34;&gt;feather&lt;/a&gt;, was developed to transfer data frames between Python and R. However, since my data is just images, I find it easier to just save them as .tiff files and read these into R. This gives me the following Python script. If you are curious about analysing hyperspectral data with HyperSpy please see &lt;a href=&#34;http://hyperspy.org/hyperspy-doc/current/user_guide/index.html&#34;&gt;the documentation&lt;/a&gt;.&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;# Load Hyperspy
+import hyperspy.api as hs
+
+# Define where to find the data
+filename = &amp;#39;data/Co sample map.bcf&amp;#39;
+folder = &amp;#39;data/&amp;#39;
+sample = &amp;#39;Co&amp;#39;
+
+# Read the raw datafile (.bcf)
+s = hs.load(filename)[1]
+print(s)
+
+# The signal is low - rebin the data and then integrate the peaks
+raw_result = s.rebin(new_shape=[256,256,2048]).get_lines_intensity()
+
+# For each element save the result as an image
+for j in range(len(raw_result)):
+    fn = &amp;#39;&amp;#39;.join([folder, sample, &amp;#39;-&amp;#39;, raw_result[j].metadata.Sample.xray_lines[0]])
+    raw_result[j].as_signal2D(image_axes=[0,1]).save(
+      filename = fn, 
+      extension = &amp;quot;tiff&amp;quot;, 
+      overwrite = True
+    )
+
+# Save the scale of the image
+file = open(&amp;#39;&amp;#39;.join([folder, sample,&amp;#39;_scale.txt&amp;#39;]), &amp;quot;w&amp;quot;)
+print(s.axes_manager[&amp;quot;width&amp;quot;].scale, file=file)
+file.close()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## &amp;lt;EDSTEMSpectrum, title: EDX, dimensions: (512, 512|2048)&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We can examine the data folder from R, and see that the images were saved.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;dir(&amp;quot;data/&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;Co-C_Ka.tiff&amp;quot;      &amp;quot;Co-Ca_Ka.tiff&amp;quot;     &amp;quot;Co-Co_Ka.tiff&amp;quot;    
+## [4] &amp;quot;Co-Mo_Ka.tiff&amp;quot;     &amp;quot;Co-Na_Ka.tiff&amp;quot;     &amp;quot;Co-O_Ka.tiff&amp;quot;     
+## [7] &amp;quot;Co-S_Ka.tiff&amp;quot;      &amp;quot;Co sample map.bcf&amp;quot; &amp;quot;Co_scale.txt&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I put this vector of filenames into a tibble and read the corresponding scale (to be used later). The approach here might be overkill, but it makes it very easy to add more paths and load data from several files simultaneously.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)
+
+samples &amp;lt;- tibble(path = &amp;quot;data/&amp;quot;) %&amp;gt;% 
+  mutate(filename = map(path, dir, pattern = &amp;quot;*.tiff&amp;quot;)) %&amp;gt;% 
+  mutate(scale = map(path, dir, pattern = &amp;quot;[A-Za-z_]*scale.txt&amp;quot;)) %&amp;gt;% 
+  mutate(scale = map(paste0(path,scale), read_lines) %&amp;gt;% as.double() * 1000) %&amp;gt;% 
+  unnest()&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;reading-tiff-images-in-r&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Reading tiff images in R&lt;/h2&gt;
+&lt;p&gt;The generated tiff images can then be loaded using the &lt;code&gt;raster&lt;/code&gt; package as demonstrated below. I also spend quite I few lines of code extracting sample name and elements from the filenames, as well as wrangling the data into a long format, suitable for plotting. In the end I normalise the intensities within each map, since &lt;a href=&#34;https://stackoverflow.com/questions/17006251/vary-the-fill-scale-when-using-facet-wrap-and-geom-tile-together/42934670#42934670&#34;&gt;it is rather inconvenient to vary the fill scale when using &lt;code&gt;facet_wrap()&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(raster)
+library(stringr)
+library(forcats)
+
+maps &amp;lt;- samples %&amp;gt;%
+  separate(filename, c(&amp;quot;sample&amp;quot;, &amp;quot;element&amp;quot;), &amp;quot;-&amp;quot;, remove = FALSE) %&amp;gt;% 
+  mutate(element = str_extract(element,&amp;quot;^[A-Za-z_]*&amp;quot;)) %&amp;gt;% 
+  separate(element, c(&amp;quot;element&amp;quot;, &amp;quot;edge&amp;quot;), &amp;quot;_&amp;quot;) %&amp;gt;% 
+  mutate(img = map(paste0(path, .data$filename), raster)) %&amp;gt;%
+  mutate(img = map(img, as, &amp;quot;SpatialPixelsDataFrame&amp;quot;)) %&amp;gt;%
+  mutate(img = map(img, as_tibble)) %&amp;gt;%
+  unnest() %&amp;gt;% 
+  mutate(x = x*scale, y = y*scale) %&amp;gt;% 
+  dplyr::select(-sample, -edge, -path, -filename) %&amp;gt;% 
+  gather(key = &amp;quot;map&amp;quot;, value = &amp;quot;intensity&amp;quot;, -x, -y, -element) %&amp;gt;% 
+  na.omit() %&amp;gt;% 
+  dplyr::select(element, x, y, intensity) %&amp;gt;% 
+  filter(element %in% c(&amp;quot;C&amp;quot;, &amp;quot;Co&amp;quot;, &amp;quot;Mo&amp;quot;, &amp;quot;S&amp;quot;, &amp;quot;O&amp;quot;)) %&amp;gt;%
+  mutate(element = fct_relevel(element, &amp;quot;C&amp;quot;, &amp;quot;O&amp;quot;, &amp;quot;S&amp;quot;, &amp;quot;Mo&amp;quot;, &amp;quot;Co&amp;quot;)) %&amp;gt;% 
+  group_by(element) %&amp;gt;% 
+  mutate(intnorm = (intensity - min(intensity)) / (max(intensity) - min(intensity))) %&amp;gt;% 
+  ungroup()&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;caption&gt;&lt;span id=&#34;tab:unnamed-chunk-5&#34;&gt;Table 1: &lt;/span&gt;maps tibble after wrangling&lt;/caption&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;left&#34;&gt;element&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;x&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;y&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;intensity&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;intnorm&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;C&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.5256356&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;268.5998&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.051271&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.0477851&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;C&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.5769069&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;268.5998&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.051271&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.0477851&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;C&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.6281782&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;268.5998&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.051271&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.0477851&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;C&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3.6794494&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;268.5998&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.051271&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.0477851&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;C&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;4.7307207&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;268.5998&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.051271&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.0477851&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;C&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.7819920&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;268.5998&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.051271&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.0477851&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;From here it is very easy to plot the different elemental maps using ggplot2. I use the &lt;a href=&#34;https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html&#34;&gt;viridis&lt;/a&gt; color scale here for its many good qualities.&lt;a href=&#34;#fn1&#34; class=&#34;footnoteRef&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(data = maps, aes(x = x, y = y, fill = intnorm)) +
+  geom_raster() +
+  facet_wrap(~element, nrow = 1) +
+  coord_equal() +
+  viridis::scale_fill_viridis() +
+  theme_minimal() +
+  theme(legend.position = &amp;quot;none&amp;quot;) +
+  labs(x = &amp;quot;x [nm]&amp;quot;, y = &amp;quot;y [nm]&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-08-04-combining-r-and-python-for-data-analysis_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;final-thoughts&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Final thoughts&lt;/h2&gt;
+&lt;p&gt;The goal of this post was to demonstrate, that a mixed analysis in R and Python can be kept in one place by working in R Markdown documents. An obvious alternative method would be to install &lt;a href=&#34;https://github.com/IRkernel/IRkernel&#34;&gt;an R kernel for Jupyter&lt;/a&gt; or &lt;a href=&#34;http://rpy.sourceforge.net/&#34;&gt;rpy2&lt;/a&gt;, which also makes it possible to mix R and Python in one notebook. This could be useful for avid Python users wishing to bring functionality from a powerful R package to their analysis.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn1&#34;&gt;&lt;p&gt;Viridis looks great, transitions smoothly between colors, reproduces nicely in greyscale and is easier to read for colorblind people.&lt;a href=&#34;#fnref1&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Interactive data analysis using shinyGadgets</title>
+      <link>/post/interactive-data-analysis-using-shinygadgets/</link>
+      <pubDate>Sat, 22 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/post/interactive-data-analysis-using-shinygadgets/</guid>
+      <description>&lt;p&gt;One of the main points I made in my last post was, that one of the barriers of adopting R as the main analysis tool is that people need accesible tools that makes it easy to do routine jobs very easy. In this post I will demonstrate how shinyGadgets can be used interactively in an analysis.&lt;/p&gt;
+&lt;div id=&#34;routine-jobs-in-r-made-easy&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Routine jobs in R made easy&lt;/h1&gt;
+&lt;p&gt;One of the jobs, that is often performed in the group is integrating cyclic voltammetry peaks to know the charge passed in a single sweep, since that tells us how many electroactive groups that reacted during one sweep. This is not necessarily easy, since there often is a large background current that needs to be substracted. We previously have had other tools (self-made software, Origin, etc.) but this is not necessarily easy.&lt;/p&gt;
+&lt;p&gt;I developed an R-function to make an easier interface to do this. Here a dataframe is loaded with the cv data, and that can then be passed to an &lt;code&gt;area()&lt;/code&gt; function where the sweep number, integration limits and the order of the background polynomial can be specified.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# library(osc)
+# file &amp;lt;- system.file(&amp;quot;extdata/cv/cv_example.txt&amp;quot;, package = &amp;quot;osc&amp;quot;)
+# df &amp;lt;- echem_read(file)
+# df &amp;lt;- area(df, sw = 1, x1 = -1.8, x2 = -1.4, p = 3)
+# plot_area(df)&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;using-interactive-shinygadgets-to-generate-analysis-code&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Using interactive shinyGadgets to generate analysis code&lt;/h2&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Setting up an RStudio Server for teaching</title>

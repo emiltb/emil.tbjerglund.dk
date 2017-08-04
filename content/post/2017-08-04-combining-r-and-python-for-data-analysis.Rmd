@@ -1,0 +1,125 @@
+---
+title: Combining R and Python for data analysis
+author: Emil Tveden Bjerglund
+date: '2017-08-04'
+slug: combining-r-and-python-for-data-analysis
+categories: [R]
+tags: [python, hyperspy]
+---
+
+As part of my PhD work I characterise nanomaterials using [Energy-dispersive X-ray spectroscopy (EDX)](https://en.wikipedia.org/wiki/Energy-dispersive_X-ray_spectroscopy) in a Scanning Transmission Electron Microscope. We do this to obtain spatial information about the chemical composition of a sample on the nanoscale. Basically, an image is obtained by raster-scanning the electron beam and recording an X-ray spectrum in each position. This effectively gives a 3-dimensional dataset, where for each pixel a full spectrum is recorded. Since different elements emit X-rays at different energies, we can essentially make images of each element in a sample by extracting that part of the spectrum.
+
+One of the best tools I have encountered for analysing such datasets is [HyperSpy](http://hyperspy.org/). It is a Python library containing easy-to-use methods for interactively exploring and extracting features. As an example it is very easy to load a datafile and visualise the spectrum at each point. 
+
+<video width="100%" controls autoplay loop>
+  <source src="/img/Hyperspy.webm" type="video/webm">
+Your browser does not support the video tag.
+</video>
+
+Now, since HyperSpy is a Python library this obviously brings some headaches, when my preferred analysis tool is R. I could do the entire analysis in a [Jupyter Notebook](http://jupyter.org/), and use matplotlib to generate pretty figures of the results. EDX data is only a small part of the data I work with, and all other data is analysed and plottd in R Markdown documents. This means, that I could quickly end up producing figures with inconsistent looks when displayed alongside other data.
+
+Fortunately it is possible to run Python code in an R Markdown document by [using a different language engine](http://rmarkdown.rstudio.com/authoring_knitr_engines.html). This means that I can load HyperSpy from my Rmd file, run the Python code for the analysis, and then continue in a new code chunk containing R code. (Note that ' should be replaced by ` below).
+```
+'''{python}
+#import hyperspy.api as hs
+'''
+```
+The main drawback of doing it this way is that I am losing on the interactive explorative tools included in HyperSpy. For this reason my workflow has been to interactively explore and develop the Python code in a Jupyter Notebook, and then copy the final script to a Python chunk in an R Markdown document. I do this to keep the final product together and get a completely reproducible analysis in my R Markdown document.
+
+## Transferring data between Python and R
+The datafile used in this example is a Bruker composite file (.bcf) containing a 512x512 pixel image with 2048 channels in the energy spectrum. I use HyperSpy to integrate specific elemental peaks in the spectrum. This produces maps of each element in the sample. I would like to plot these in R, as I am more proficient at fine-tuning the plots to my desired look in ggplot2. It is however not possible to directly transfer data from a Python code chunk to an R code chunk, so I need to save the data to the disk and and then load it again. A specific package, [feather](https://blog.rstudio.com/2016/03/29/feather/), was developed to transfer data frames between Python and R. However, since my data is just images, I find it easier to just save them as .tiff files and read these into R. This gives me the following Python script. If you are curious about analysing hyperspectral data with HyperSpy please see [the documentation](http://hyperspy.org/hyperspy-doc/current/user_guide/index.html).
+
+```{python}
+# Load Hyperspy
+import hyperspy.api as hs
+
+# Define where to find the data
+filename = 'data/Co sample map.bcf'
+folder = 'data/'
+sample = 'Co'
+
+# Read the raw datafile (.bcf)
+s = hs.load(filename)[1]
+print(s)
+
+# The signal is low - rebin the data and then integrate the peaks
+raw_result = s.rebin(new_shape=[256,256,2048]).get_lines_intensity()
+
+# For each element save the result as an image
+for j in range(len(raw_result)):
+    fn = ''.join([folder, sample, '-', raw_result[j].metadata.Sample.xray_lines[0]])
+    raw_result[j].as_signal2D(image_axes=[0,1]).save(
+      filename = fn, 
+      extension = "tiff", 
+      overwrite = True
+    )
+
+# Save the scale of the image
+file = open(''.join([folder, sample,'_scale.txt']), "w")
+print(s.axes_manager["width"].scale, file=file)
+file.close()
+```
+
+We can examine the data folder from R, and see that the images were saved. 
+```{r}
+dir("data/")
+```
+
+I put this vector of filenames into a tibble and read the corresponding scale (to be used later). The approach here might be overkill, but it makes it very easy to add more paths and load data from several files simultaneously.
+
+```{r message=FALSE}
+library(tidyverse)
+
+samples <- tibble(path = "data/") %>% 
+  mutate(filename = map(path, dir, pattern = "*.tiff")) %>% 
+  mutate(scale = map(path, dir, pattern = "[A-Za-z_]*scale.txt")) %>% 
+  mutate(scale = map(paste0(path,scale), read_lines) %>% as.double() * 1000) %>% 
+  unnest()
+```
+
+
+## Reading tiff images in R
+The generated tiff images can then be loaded using the `raster` package as demonstrated below. I also spend quite I few lines of code extracting sample name and elements from the filenames, as well as wrangling the data into a long format, suitable for plotting. In the end I normalise the intensities within each map, since [it is rather inconvenient to vary the fill scale when using `facet_wrap()`](https://stackoverflow.com/questions/17006251/vary-the-fill-scale-when-using-facet-wrap-and-geom-tile-together/42934670#42934670).
+```{r message=FALSE}
+library(raster)
+library(stringr)
+library(forcats)
+
+maps <- samples %>%
+  separate(filename, c("sample", "element"), "-", remove = FALSE) %>% 
+  mutate(element = str_extract(element,"^[A-Za-z_]*")) %>% 
+  separate(element, c("element", "edge"), "_") %>% 
+  mutate(img = map(paste0(path, .data$filename), raster)) %>%
+  mutate(img = map(img, as, "SpatialPixelsDataFrame")) %>%
+  mutate(img = map(img, as_tibble)) %>%
+  unnest() %>% 
+  mutate(x = x*scale, y = y*scale) %>% 
+  dplyr::select(-sample, -edge, -path, -filename) %>% 
+  gather(key = "map", value = "intensity", -x, -y, -element) %>% 
+  na.omit() %>% 
+  dplyr::select(element, x, y, intensity) %>% 
+  filter(element %in% c("C", "Co", "Mo", "S", "O")) %>%
+  mutate(element = fct_relevel(element, "C", "O", "S", "Mo", "Co")) %>% 
+  group_by(element) %>% 
+  mutate(intnorm = (intensity - min(intensity)) / (max(intensity) - min(intensity))) %>% 
+  ungroup()
+```
+
+```{r echo=FALSE}
+knitr::kable(head(maps), caption = "maps tibble after wrangling")
+```
+
+From here it is very easy to plot the different elemental maps using ggplot2. I use the [viridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html) color scale here for its many good qualities.^[Viridis looks great, transitions smoothly between colors, reproduces nicely in greyscale and is easier to read for colorblind people.]
+```{r fig.height=2}
+ggplot(data = maps, aes(x = x, y = y, fill = intnorm)) +
+  geom_raster() +
+  facet_wrap(~element, nrow = 1) +
+  coord_equal() +
+  viridis::scale_fill_viridis() +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  labs(x = "x [nm]", y = "y [nm]")
+```
+
+## Final thoughts
+The goal of this post was to demonstrate, that a mixed analysis in R and Python can be kept in one place by working in R Markdown documents. An obvious alternative method would be to install [an R kernel for Jupyter](https://github.com/IRkernel/IRkernel) or [rpy2](http://rpy.sourceforge.net/), which also makes it possible to mix R and Python in one notebook. This could be useful for avid Python users wishing to bring functionality from a powerful R package to their analysis. 

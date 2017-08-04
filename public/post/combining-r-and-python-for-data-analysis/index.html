@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="theme" content="hugo-academic">
+  <meta name="generator" content="Hugo 0.25" />
+  <meta name="author" content="Emil Tveden Bjerglund">
+  <meta name="description" content="Ph.d.-student in Nanoscience">
+
+  
+  
+  
+    
+  
+  
+    
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css">
+    
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha512-6MXa8B6uaO18Hid6blRMetEIoPqHf7Ux1tnyIQdpt9qI5OACx7C+O3IVTr98vwGnlcg0LOLa02i9Y1HpVhlfiw==" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.0/css/academicons.min.css" integrity="sha512-GGGNUPDhnG8LEAEDsjqYIQns+Gu8RBs4j5XGlxl7UfRaZBhCCm5jenJkeJL8uPuOXGqgl8/H1gjlWQDRjd3cUQ==" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather%7CRoboto+Mono">
+  <link rel="stylesheet" href="/css/hugo-academic.css">
+  
+
+  
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-98371395-1', 'auto');
+      ga('require', 'eventTracker');
+      ga('require', 'outboundLinkTracker');
+      ga('require', 'urlChangeTracker');
+      ga('send', 'pageview');
+    </script>
+    <script async src="//www.google-analytics.com/analytics.js"></script>
+    
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/autotrack/2.4.1/autotrack.js" integrity="sha512-HUmooslVKj4m6OBu0OgzjXXr+QuFYy/k7eLI5jdeEy/F4RSgMn6XRWRGkFi5IFaFgy7uFTkegp3Z0XnJf3Jq+g==" crossorigin="anonymous"></script>
+    
+  
+
+  <link rel="alternate" href="/index.xml" type="application/rss+xml" title="Open and Efficient Research">
+  <link rel="feed" href="/index.xml" type="application/rss+xml" title="Open and Efficient Research">
+
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/apple-touch-icon.png">
+
+  <link rel="canonical" href="/post/combining-r-and-python-for-data-analysis/">
+
+  
+
+  <title>Combining R and Python for data analysis | Open and Efficient Research</title>
+
+</head>
+<body id="top" data-spy="scroll" data-target="#navbar-main" data-offset="71">
+
+<nav class="navbar navbar-default navbar-fixed-top" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+              data-target=".navbar-collapse" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Open and Efficient Research</a>
+    </div>
+
+    
+    <div class="collapse navbar-collapse">
+
+      
+      <ul class="nav navbar-nav navbar-right">
+        
+
+        
+
+        <li class="nav-item">
+          <a href="/#about">
+            
+            <span>Home</span>
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        <li class="nav-item">
+          <a href="/#posts">
+            
+            <span>Posts</span>
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        <li class="nav-item">
+          <a href="/#publications">
+            
+            <span>Publications</span>
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        <li class="nav-item">
+          <a href="/#talks">
+            
+            <span>Presentations</span>
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        <li class="nav-item">
+          <a href="/#contact">
+            
+            <span>Contact</span>
+          </a>
+        </li>
+
+        
+        
+
+        
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+<article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+  <div class="article-container">
+    <h1 itemprop="name">Combining R and Python for data analysis</h1>
+    
+
+<div class="article-metadata">
+
+  <span class="article-date">
+    <time datetime="2017-08-04 00:00:00 &#43;0000 UTC" itemprop="datePublished">
+      Fri, Aug 4, 2017
+    </time>
+  </span>
+
+  
+  
+  
+  <span class="article-categories">
+    <i class="fa fa-folder"></i>
+    
+    <a href="/categories/r">R</a
+    >
+    
+  </span>
+  
+  
+
+  
+  
+  
+  <span class="article-tags">
+    <i class="fa fa-tags"></i>
+    
+    <a href="/tags/python">python</a
+    >, 
+    
+    <a href="/tags/hyperspy">hyperspy</a
+    >
+    
+  </span>
+  
+  
+
+  
+  
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    <li>
+      <a class="facebook"
+         href="https://www.facebook.com/sharer.php?u=%2fpost%2fcombining-r-and-python-for-data-analysis%2f"
+         target="_blank">
+        <i class="fa fa-facebook"></i>
+      </a>
+    </li>
+    <li>
+      <a class="twitter"
+         href="https://twitter.com/intent/tweet?text=Combining%20R%20and%20Python%20for%20data%20analysis&amp;url=%2fpost%2fcombining-r-and-python-for-data-analysis%2f"
+         target="_blank">
+        <i class="fa fa-twitter"></i>
+      </a>
+    </li>
+    <li>
+      <a class="linkedin"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%2fpost%2fcombining-r-and-python-for-data-analysis%2f&amp;title=Combining%20R%20and%20Python%20for%20data%20analysis"
+         target="_blank">
+        <i class="fa fa-linkedin"></i>
+      </a>
+    </li>
+    <li>
+      <a class="email"
+         href="mailto:?subject=Combining%20R%20and%20Python%20for%20data%20analysis&amp;body=%2fpost%2fcombining-r-and-python-for-data-analysis%2f">
+        <i class="fa fa-envelope"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    <div class="article-style" itemprop="articleBody">
+      <p>As part of my PhD work I characterise nanomaterials using <a href="https://en.wikipedia.org/wiki/Energy-dispersive_X-ray_spectroscopy">Energy-dispersive X-ray spectroscopy (EDX)</a> in a Scanning Transmission Electron Microscope. We do this to obtain spatial information about the chemical composition of a sample on the nanoscale. Basically, an image is obtained by raster-scanning the electron beam and recording an X-ray spectrum in each position. This effectively gives a 3-dimensional dataset, where for each pixel a full spectrum is recorded. Since different elements emit X-rays at different energies, we can essentially make images of each element in a sample by extracting that part of the spectrum.</p>
+<p>One of the best tools I have encountered for analysing such datasets is <a href="http://hyperspy.org/">HyperSpy</a>. It is a Python library containing easy-to-use methods for interactively exploring and extracting features. As an example it is very easy to load a datafile and visualise the spectrum at each point.</p>
+<video width="100%" controls autoplay loop>
+<source src="/img/Hyperspy.webm" type="video/webm"> Your browser does not support the video tag.
+</video>
+<p>Now, since HyperSpy is a Python library this obviously brings some headaches, when my preferred analysis tool is R. I could do the entire analysis in a <a href="http://jupyter.org/">Jupyter Notebook</a>, and use matplotlib to generate pretty figures of the results. EDX data is only a small part of the data I work with, and all other data is analysed and plottd in R Markdown documents. This means, that I could quickly end up producing figures with inconsistent looks when displayed alongside other data.</p>
+<p>Fortunately it is possible to run Python code in an R Markdown document by <a href="http://rmarkdown.rstudio.com/authoring_knitr_engines.html">using a different language engine</a>. This means that I can load HyperSpy from my Rmd file, run the Python code for the analysis, and then continue in a new code chunk containing R code. (Note that ’ should be replaced by ` below).</p>
+<pre><code>&#39;&#39;&#39;{python}
+#import hyperspy.api as hs
+&#39;&#39;&#39;</code></pre>
+<p>The main drawback of doing it this way is that I am losing on the interactive explorative tools included in HyperSpy. For this reason my workflow has been to interactively explore and develop the Python code in a Jupyter Notebook, and then copy the final script to a Python chunk in an R Markdown document. I do this to keep the final product together and get a completely reproducible analysis in my R Markdown document.</p>
+<div id="transferring-data-between-python-and-r" class="section level2">
+<h2>Transferring data between Python and R</h2>
+<p>The datafile used in this example is a Bruker composite file (.bcf) containing a 512x512 pixel image with 2048 channels in the energy spectrum. I use HyperSpy to integrate specific elemental peaks in the spectrum. This produces maps of each element in the sample. I would like to plot these in R, as I am more proficient at fine-tuning the plots to my desired look in ggplot2. It is however not possible to directly transfer data from a Python code chunk to an R code chunk, so I need to save the data to the disk and and then load it again. A specific package, <a href="https://blog.rstudio.com/2016/03/29/feather/">feather</a>, was developed to transfer data frames between Python and R. However, since my data is just images, I find it easier to just save them as .tiff files and read these into R. This gives me the following Python script. If you are curious about analysing hyperspectral data with HyperSpy please see <a href="http://hyperspy.org/hyperspy-doc/current/user_guide/index.html">the documentation</a>.</p>
+<pre class="python"><code># Load Hyperspy
+import hyperspy.api as hs
+
+# Define where to find the data
+filename = &#39;data/Co sample map.bcf&#39;
+folder = &#39;data/&#39;
+sample = &#39;Co&#39;
+
+# Read the raw datafile (.bcf)
+s = hs.load(filename)[1]
+print(s)
+
+# The signal is low - rebin the data and then integrate the peaks
+raw_result = s.rebin(new_shape=[256,256,2048]).get_lines_intensity()
+
+# For each element save the result as an image
+for j in range(len(raw_result)):
+    fn = &#39;&#39;.join([folder, sample, &#39;-&#39;, raw_result[j].metadata.Sample.xray_lines[0]])
+    raw_result[j].as_signal2D(image_axes=[0,1]).save(
+      filename = fn, 
+      extension = &quot;tiff&quot;, 
+      overwrite = True
+    )
+
+# Save the scale of the image
+file = open(&#39;&#39;.join([folder, sample,&#39;_scale.txt&#39;]), &quot;w&quot;)
+print(s.axes_manager[&quot;width&quot;].scale, file=file)
+file.close()</code></pre>
+<pre><code>## &lt;EDSTEMSpectrum, title: EDX, dimensions: (512, 512|2048)&gt;</code></pre>
+<p>We can examine the data folder from R, and see that the images were saved.</p>
+<pre class="r"><code>dir(&quot;data/&quot;)</code></pre>
+<pre><code>## [1] &quot;Co-C_Ka.tiff&quot;      &quot;Co-Ca_Ka.tiff&quot;     &quot;Co-Co_Ka.tiff&quot;    
+## [4] &quot;Co-Mo_Ka.tiff&quot;     &quot;Co-Na_Ka.tiff&quot;     &quot;Co-O_Ka.tiff&quot;     
+## [7] &quot;Co-S_Ka.tiff&quot;      &quot;Co sample map.bcf&quot; &quot;Co_scale.txt&quot;</code></pre>
+<p>I put this vector of filenames into a tibble and read the corresponding scale (to be used later). The approach here might be overkill, but it makes it very easy to add more paths and load data from several files simultaneously.</p>
+<pre class="r"><code>library(tidyverse)
+
+samples &lt;- tibble(path = &quot;data/&quot;) %&gt;% 
+  mutate(filename = map(path, dir, pattern = &quot;*.tiff&quot;)) %&gt;% 
+  mutate(scale = map(path, dir, pattern = &quot;[A-Za-z_]*scale.txt&quot;)) %&gt;% 
+  mutate(scale = map(paste0(path,scale), read_lines) %&gt;% as.double() * 1000) %&gt;% 
+  unnest()</code></pre>
+</div>
+<div id="reading-tiff-images-in-r" class="section level2">
+<h2>Reading tiff images in R</h2>
+<p>The generated tiff images can then be loaded using the <code>raster</code> package as demonstrated below. I also spend quite I few lines of code extracting sample name and elements from the filenames, as well as wrangling the data into a long format, suitable for plotting. In the end I normalise the intensities within each map, since <a href="https://stackoverflow.com/questions/17006251/vary-the-fill-scale-when-using-facet-wrap-and-geom-tile-together/42934670#42934670">it is rather inconvenient to vary the fill scale when using <code>facet_wrap()</code></a>.</p>
+<pre class="r"><code>library(raster)
+library(stringr)
+library(forcats)
+
+maps &lt;- samples %&gt;%
+  separate(filename, c(&quot;sample&quot;, &quot;element&quot;), &quot;-&quot;, remove = FALSE) %&gt;% 
+  mutate(element = str_extract(element,&quot;^[A-Za-z_]*&quot;)) %&gt;% 
+  separate(element, c(&quot;element&quot;, &quot;edge&quot;), &quot;_&quot;) %&gt;% 
+  mutate(img = map(paste0(path, .data$filename), raster)) %&gt;%
+  mutate(img = map(img, as, &quot;SpatialPixelsDataFrame&quot;)) %&gt;%
+  mutate(img = map(img, as_tibble)) %&gt;%
+  unnest() %&gt;% 
+  mutate(x = x*scale, y = y*scale) %&gt;% 
+  dplyr::select(-sample, -edge, -path, -filename) %&gt;% 
+  gather(key = &quot;map&quot;, value = &quot;intensity&quot;, -x, -y, -element) %&gt;% 
+  na.omit() %&gt;% 
+  dplyr::select(element, x, y, intensity) %&gt;% 
+  filter(element %in% c(&quot;C&quot;, &quot;Co&quot;, &quot;Mo&quot;, &quot;S&quot;, &quot;O&quot;)) %&gt;%
+  mutate(element = fct_relevel(element, &quot;C&quot;, &quot;O&quot;, &quot;S&quot;, &quot;Mo&quot;, &quot;Co&quot;)) %&gt;% 
+  group_by(element) %&gt;% 
+  mutate(intnorm = (intensity - min(intensity)) / (max(intensity) - min(intensity))) %&gt;% 
+  ungroup()</code></pre>
+<table>
+<caption><span id="tab:unnamed-chunk-5">Table 1: </span>maps tibble after wrangling</caption>
+<thead>
+<tr class="header">
+<th align="left">element</th>
+<th align="right">x</th>
+<th align="right">y</th>
+<th align="right">intensity</th>
+<th align="right">intnorm</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">C</td>
+<td align="right">0.5256356</td>
+<td align="right">268.5998</td>
+<td align="right">1.051271</td>
+<td align="right">0.0477851</td>
+</tr>
+<tr class="even">
+<td align="left">C</td>
+<td align="right">1.5769069</td>
+<td align="right">268.5998</td>
+<td align="right">1.051271</td>
+<td align="right">0.0477851</td>
+</tr>
+<tr class="odd">
+<td align="left">C</td>
+<td align="right">2.6281782</td>
+<td align="right">268.5998</td>
+<td align="right">1.051271</td>
+<td align="right">0.0477851</td>
+</tr>
+<tr class="even">
+<td align="left">C</td>
+<td align="right">3.6794494</td>
+<td align="right">268.5998</td>
+<td align="right">1.051271</td>
+<td align="right">0.0477851</td>
+</tr>
+<tr class="odd">
+<td align="left">C</td>
+<td align="right">4.7307207</td>
+<td align="right">268.5998</td>
+<td align="right">1.051271</td>
+<td align="right">0.0477851</td>
+</tr>
+<tr class="even">
+<td align="left">C</td>
+<td align="right">5.7819920</td>
+<td align="right">268.5998</td>
+<td align="right">1.051271</td>
+<td align="right">0.0477851</td>
+</tr>
+</tbody>
+</table>
+<p>From here it is very easy to plot the different elemental maps using ggplot2. I use the <a href="https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html">viridis</a> color scale here for its many good qualities.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+<pre class="r"><code>ggplot(data = maps, aes(x = x, y = y, fill = intnorm)) +
+  geom_raster() +
+  facet_wrap(~element, nrow = 1) +
+  coord_equal() +
+  viridis::scale_fill_viridis() +
+  theme_minimal() +
+  theme(legend.position = &quot;none&quot;) +
+  labs(x = &quot;x [nm]&quot;, y = &quot;y [nm]&quot;)</code></pre>
+<p><img src="/post/2017-08-04-combining-r-and-python-for-data-analysis_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="final-thoughts" class="section level2">
+<h2>Final thoughts</h2>
+<p>The goal of this post was to demonstrate, that a mixed analysis in R and Python can be kept in one place by working in R Markdown documents. An obvious alternative method would be to install <a href="https://github.com/IRkernel/IRkernel">an R kernel for Jupyter</a> or <a href="http://rpy.sourceforge.net/">rpy2</a>, which also makes it possible to mix R and Python in one notebook. This could be useful for avid Python users wishing to bring functionality from a powerful R package to their analysis.</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Viridis looks great, transitions smoothly between colors, reproduces nicely in greyscale and is easier to read for colorblind people.<a href="#fnref1">↩</a></p></li>
+</ol>
+</div>
+
+    </div>
+  </div>
+
+</article>
+
+<div class="container">
+  <nav>
+  <ul class="pager">
+    
+    <li class="previous"><a href="/post/interactive-data-analysis-using-shinygadgets/"><span
+      aria-hidden="true">&larr;</span> Interactive data analysis using shinyGadgets</a></li>
+    
+
+    
+  </ul>
+</nav>
+
+</div>
+
+<div class="article-container">
+  
+
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <p class="powered-by">
+
+      &copy; 2017 Emil Tveden Bjerglund &middot; 
+
+      Powered by the <a href="https://github.com/gcushen/hugo-academic" target="_blank">Academic
+      theme</a> for <a href="http://gohugo.io" target="_blank">Hugo</a>.
+
+      <span class="pull-right" aria-hidden="true">
+        <a href="#" id="back_to_top">
+          <span class="button_icon">
+            <i class="fa fa-chevron-up fa-2x"></i>
+          </span>
+        </a>
+      </span>
+
+    </p>
+  </div>
+</footer>
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js" integrity="sha512-jGsMH83oKe9asCpkOVkBnUrDDTp8wl+adkB2D+//JtlxO4SrLoJdhbOysIFQJloQFD+C4Fl1rMsQZF76JjV0eQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.2/imagesloaded.pkgd.min.js" integrity="sha512-iHzEu7GbSc705hE2skyH6/AlTpOfBmkx7nUqTLGzPYR+C1tRaItbRlJ7hT/D3YQ9SV0fqLKzp4XY9wKulTBGTw==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js" integrity="sha512-Z5heTz36xTemt1TbtbfXtTq5lMfYnOkXM2/eWcTTiLU01+Sw4ku1i7vScDc8fWhrP2abz9GQzgKH5NGBLoYlAw==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/plugins/ScrollToPlugin.min.js" integrity="sha512-CDeU7pRtkPX6XJtF/gcFWlEwyaX7mcAp5sO3VIu/ylsdR74wEw4wmBpD5yYTrmMAiAboi9thyBUr1vXRPA7t0Q==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha512-iztkobsvnjKfAtTNdHkGVjAYTrrtlC7mGp/54c40wowO7LhURYl3gVzzcEqGl/qKXQltJ2HwMrdLcNUdo+N/RQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.4/isotope.pkgd.min.js" integrity="sha512-VDBOIlDbuC4VWxGJNmuFRQ0Li0SKkDpmGyuhAG5LTDLd/dJ/S0WMVxriR2Y+CyPL5gzjpN4f/6iqWVBJlht0tQ==" crossorigin="anonymous"></script>
+    
+    <script src="/js/hugo-academic.js"></script>
+    
+
+    
+    
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/r.min.js"></script>
+      
+
+      
+
+      <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+    </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML" integrity="sha512-tOav5w1OjvsSJzePRtt2uQPFwBoHt1VZcUq8l8nm5284LEKE9FSJBQryzMBzHxY5P0zRdNqEcpLIRVYFNgu1jw==" crossorigin="anonymous"></script>
+    
+    
+
+  </body>
+</html>
+

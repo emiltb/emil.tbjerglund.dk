@@ -5,6 +5,24 @@
     
     <url>
     
+      <loc>/post/combining-r-and-python-for-data-analysis/</loc>
+      <lastmod>2017-08-04T00:00:00+00:00</lastmod>
+    </url>
+    
+  
+    
+    
+    <url>
+    
+      <loc>/post/interactive-data-analysis-using-shinygadgets/</loc>
+      <lastmod>2017-07-22T00:00:00+00:00</lastmod>
+    </url>
+    
+  
+    
+    
+    <url>
+    
       <loc>/post/setting-up-an-rstudio-server-for-teaching/</loc>
       <lastmod>2017-07-12T00:00:00+00:00</lastmod>
     </url>
@@ -141,6 +159,16 @@
     
     <url>
     
+      <loc>/tags/hyperspy/</loc>
+      <lastmod>2017-08-04T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    
+    <url>
+    
       <loc>/categories/open-science/</loc>
       <lastmod>2017-07-10T00:00:00+00:00</lastmod>
       <priority>0</priority>
@@ -171,8 +199,28 @@
     
     <url>
     
+      <loc>/tags/python/</loc>
+      <lastmod>2017-08-04T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    
+    <url>
+    
       <loc>/categories/r/</loc>
-      <lastmod>2017-07-12T00:00:00+00:00</lastmod>
+      <lastmod>2017-08-04T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    
+    <url>
+    
+      <loc>/tags/shiny/</loc>
+      <lastmod>2017-07-22T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     
