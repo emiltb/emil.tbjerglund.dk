@@ -1,0 +1,348 @@
+---
+title: Hvordan klarer de politiske partier sig på Facebook?
+author: ~
+date: '2017-09-19'
+slug: hvordan-klarer-de-politiske-partier-sig-paa-facebook
+categories: [R, politik]
+tags: [data, dansk, facebook]
+---
+
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(extrafont)
+library(ggthemes)
+theme_set(theme_minimal(base_family = "Roboto Condensed", base_size = 12))
+
+dot1000 <- function(x) format(
+      x, 
+      big.mark = ".", 
+      decimal.mark = ",", 
+      scientific = FALSE
+      )
+```
+
+For ganske nyligt opdagede jeg, at der er lavet en [RFacebook](https://github.com/pablobarbera/Rfacebook) pakke til at trække data fra Facebooks Graph API. Det blev brugt til en analyse af [Donald Trump og Hillary Clintons kampagner under den seneste amerikanske valgkamp](http://rforjournalists.com/2017/09/10/comparing-donald-trump-and-hillary-clintons-facebook-pages-during-the-us-presidential-election-2016/). Det kunne være interessant at se hvad vi kan sige om de danske politiske partier baseret på deres facebook-aktivitet.
+
+* Hvem er mest aktive?
+* Hvem er mest effektive i sin kommunikation?
+
+Dele af R-koden i dette indlæg er skjult for at øge læsbarheden, men den fulde kildekode er tilgængelig på [Github](https://github.com/emiltb/emil.tbjerglund.dk/tree/master/content/post).
+
+Det kræver en Access Token at få adgang til API'et. Den kan hentes [her](https://developers.facebook.com/tools/explorer/). Jeg har gemt den i variablen `fb_token`. Nedenstående kode henter derefter data fra partiernes facebook sider vha. `getPage()` funktionen fra `RFacebook` mellem 20. september 2016 og 19. september 2017. Data gemmes i en fil, således at vi ikke behøver gentage API-kaldet i en senere session (det tager nogle minutter at hente al data ned). 
+
+```{r loading-data, message=FALSE, warning=FALSE}
+library(Rfacebook)
+library(lubridate)
+
+start <- "2016/09/20"
+end <- "2017/09/19"
+common_caption <- paste0("Data fra ", start, " til ", end, "\n@emilbp")
+
+if (!file.exists("data/fbdata.Rdata")) {
+  data <- tibble(partinavne = c("venstre.dk", "socialdemokratiet", "Konservative",
+    "danskfolkeparti", "LiberalAlliance", "radikalevenstre", 
+    "sfparti", "enhedslisten", "alternativet.dk", 
+    "nyeborgerlige")) %>% 
+    mutate(
+      data = map(partinavne, getPage, 
+        token = fb_token, n = 5000, since=start, until=end)
+      ) %>% 
+    mutate(data = map(data, as_tibble))
+saveRDS(data, file = "data/fbdata.Rdata")
+} else {
+  data <- readRDS("data/fbdata.Rdata")
+}
+data
+```
+
+På de respektive facebook-sider kan vi naturligvis også finde antallet af følgere - dem gemmer vi også lige, da vi skal bruge dem senere.
+
+```{r no-followers}
+# Antal følgere pr. 19. september 2017
+no_followers <- tribble(
+  ~partinavne, ~no_followers,
+  "Venstre", 68212,
+  "Socialdemokratiet", 93672,
+  "Konservative", 32615,
+  "Dansk Folkeparti", 84510,
+  "Liberal Alliance", 93861,
+  "Radikale Venstre", 36298,
+  "SF", 35261,
+  "Enhedslisten", 79713,
+  "Alternativet", 91329,
+  "Nye Borgerlige", 21553
+)
+```
+
+
+Vores `data` objekt indeholder partinavnene og en tabel med data for hvert parti. Lad os lige tage et kig på, hvilke informationer vi har tilgængelige.
+
+```{r}
+colnames(data$data[[1]])
+```
+
+Vi har altså en del data på hvert post - hvornår den er afsendt, hvilken type post (video, tekst, billede) samt hvor mange likes, kommentarer og delinger der er. Især den sidste del er interessant for at undersøge hvor godt de forskellige partier præsterer på Facebook.
+
+Vi laver lige et par modifikationer til vores datasæt, for at gøre det nemmere at arbejde med. Vi tilføjer en kolonne med `mutate()` der fortæller om partiet tilhører rød eller blå blok og retter partinavnene til så de står pænere i de plots vi laver senere med `case_when()`. Så kobler vi antallet af følgere på tabellen med `left_join()`, således at disse tal bliver nemmere at arbejde med senere og pakker alle tabellerne ud med `unnest()`, således at det hele er samlet i en stor tabel.
+
+```{r data-wrangling, message=FALSE}
+fbdata <- data %>% 
+  mutate(blok = ifelse(partinavne %in% c("venstre.dk", "Konservative",
+    "danskfolkeparti", "LiberalAlliance", "nyeborgerlige"), "Blå", "Rød"))  %>% 
+  mutate(partinavne = case_when(
+    partinavne == "venstre.dk" ~ "Venstre",
+    partinavne == "socialdemokratiet" ~ "Socialdemokratiet",
+    partinavne == "Konservative" ~ "Konservative",
+    partinavne == "danskfolkeparti" ~ "Dansk Folkeparti",
+    partinavne == "LiberalAlliance" ~ "Liberal Alliance",
+    partinavne == "radikalevenstre" ~ "Radikale Venstre",
+    partinavne == "sfparti" ~ "SF",
+    partinavne == "enhedslisten" ~ "Enhedslisten",
+    partinavne == "alternativet.dk" ~ "Alternativet",
+    partinavne == "nyeborgerlige" ~ "Nye Borgerlige"
+  )) %>% 
+  left_join(no_followers) %>% 
+  unnest() %>% 
+  mutate(created_time = as_datetime(created_time)) %>% 
+  mutate(type = case_when(
+    type == "link" ~ "Link",
+    type == "photo" ~ "Billede",
+    type == "video" ~ "Video",
+    TRUE ~ type
+  )) %>% 
+  select(
+    partinavne, blok, no_followers, created_time, type, 
+    Likes = "likes_count", Delinger = "shares_count", Kommentarer = "comments_count"
+    )
+```
+
+```{r echo=FALSE}
+print(fbdata,n = 5)
+```
+
+## Hvor aktive er partierne?
+Med disse data i hånden er det nu en smal sag at begynde selve analysen. Vi har i alt `r nrow(fbdata)` Facebook-opslag i vores datasæt. Lad os starte med at få et overblik. Hvilke partier er mest aktive?
+
+```{r antal-opslag, fig.height=3.2}
+fbdata %>% 
+  group_by(partinavne) %>% 
+  mutate(posts = n()) %>% 
+  slice(1L) %>% 
+  ungroup() %>% 
+  mutate(partinavne = forcats::fct_reorder(partinavne, posts)) %>% 
+  ggplot(aes(partinavne, posts, fill = blok)) + 
+    geom_col() +
+    coord_flip() +
+    scale_fill_manual(values = c("steelblue", "tomato")) +
+    theme(
+      axis.title.y = element_blank(), 
+      legend.position = "none"
+      ) +
+    labs(
+      y = "Antal opslag", 
+      title = "Antal Facebook-opslag per parti", 
+      caption = common_caption
+      )
+```
+
+Vi kan bryde det ned efter type af opslag, for at se om der er nogle tendenser.
+
+```{r antal-opslag-type, fig.height=3.2, echo = FALSE}
+fbdata %>% 
+  group_by(partinavne, type) %>% 
+  mutate(posts = n()) %>% 
+  slice(1L) %>% 
+  ungroup() %>% 
+  mutate(partinavne = forcats::fct_reorder(partinavne, posts, fun = sum)) %>%
+  mutate(type = forcats::fct_lump(type, 3, other_level = "Andet")) %>% 
+  ggplot(aes(partinavne, posts, fill = blok)) + 
+    geom_col() +
+    coord_flip() +
+    scale_fill_manual(values = c("steelblue", "tomato")) +
+    theme(
+      axis.title.y = element_blank(), 
+      legend.position = "none"
+      ) +
+    labs(
+      y = "Antal opslag", 
+      title = "Antal Facebook opslag per parti", 
+      caption = common_caption
+      ) +
+    facet_wrap(~type, nrow = 1, scales = "free_x")
+```
+
+Alternativet er altså ubetinget det mest aktive parti og lægger fleste links, billeder og videoer op. Kategorien Andet dækker over begivenheder, noter og helt almindelige statusopdateringer.
+
+## Hvem får mest respons?
+At være meget aktiv på Facebook kræver blot nogle ihærdige SoMe-typer, men det der virkelig skaber værdi for partierne må være at folk reagerer på deres opslag - det giver synlighed og omtale. Vi kan sammenligne den gennemsnitlige respons for hvert parti i løbet af det sidste år.
+
+```{r gns-engagement, fig.height=7}
+fbdata %>% 
+  mutate(month = floor_date(created_time, "month")) %>% 
+  group_by(partinavne, month) %>% 
+  summarise(
+    Likes = mean(Likes),
+    Kommentarer = mean(Kommentarer),
+    Delinger = mean(Delinger)
+    ) %>% 
+  gather(key = "param", value = "value", -partinavne, -month) %>% 
+  ggplot(aes(month, value, color = partinavne)) +
+    geom_line(size = 1.5, alpha = 0.75) +
+    facet_wrap(~param, scales = "free_y", ncol = 1) +
+    scale_color_brewer(palette = "Paired") +
+    theme(
+      legend.position = "bottom", 
+      legend.title = element_blank()
+      ) +
+    labs(
+      x = "Måned", 
+      y = "Gennemsnit per opslag", 
+      title = "Engagement på Facebook", 
+      caption = common_caption
+      ) +
+    scale_x_datetime(date_breaks = "3 months", date_minor_breaks = "1 month")
+```
+
+Dansk Folkeparti høster altså gennemsnitligt flere likes og kommentarer på deres opslag end de andre partier. Nye Borgerlige har, især i de sidste måneder, fulgt godt med. DF og NB lå langt nede på listen over samlet antal opslag, men til gengæld reagerer deres følgere mere på det de skriver.
+
+Vi kan se på hvilke partier der i alt høster størst engagement på Facebook ved at se på summen af likes, kommentarer og delinger måned for måned. 
+
+```{r total-engagement, fig.height=7, echo = FALSE}
+fbdata %>% 
+  mutate(month = floor_date(created_time, "month")) %>% 
+  group_by(partinavne, month) %>% 
+  summarise(
+    Likes = sum(Likes),
+    Kommentarer = sum(Kommentarer),
+    Delinger = sum(Delinger)
+    ) %>% 
+  gather(key = "param", value = "value", -partinavne, -month) %>% 
+  ggplot(aes(month, value, color = partinavne)) +
+    geom_line(size = 1.5, alpha = 0.75) +
+    facet_wrap(~param, scales = "free_y", ncol = 1) +
+    scale_color_brewer(palette = "Paired") +
+    theme(
+      legend.position = "bottom", 
+      legend.title = element_blank()
+      ) +
+    labs(
+      x = "Måned", 
+      y = "Total per måned", 
+      title = "Engagement på Facebook", 
+      caption = common_caption
+      ) +
+    scale_x_datetime(date_breaks = "1 month", minor_breaks = NULL)
+```
+
+Her ser vi at Dansk Folkeparti igen markerer sig i toppen, men Alternativets tilgang med rigtig mange opslag ser også ud til at give resultater, da deres totale antal likes tangerer Dansk Folkepartis. Enhedslisten ser også ud til at skille sig ud her, især hvis man sammenligner med SF, som laver cirka lige så mange opslag.
+
+## Hvem kommunikerer mest effektivt og får mest engagement?
+Det nemmeste regnestykke at lave i den her sammenhæng er nok at se på det totale antal likes for hvert parti i løbet af det sidste år.
+
+```{r total-likes-folgere, fig.height=3}
+sum_fbdata <- fbdata %>% 
+  group_by(partinavne) %>% 
+  mutate(
+    sum_likes = sum(Likes)
+    ) %>% 
+  slice(1L) %>% 
+  ungroup() %>% 
+  mutate(partinavne = forcats::fct_reorder(partinavne, sum_likes))
+
+sum_fbdata %>% 
+  ggplot(aes(no_followers, sum_likes, color = blok)) +
+    #geom_text(aes(label = partinavne)) +
+    geom_point() +
+    ggrepel::geom_text_repel(aes(label = partinavne, color = blok), segment.color="black") +
+    scale_color_manual(values = c("steelblue", "tomato")) +
+    scale_fill_manual(values = c("steelblue", "tomato")) +
+    theme(legend.position = "none")+
+      scale_y_continuous(limits = c(50000, 550000), labels = dot1000) +
+      scale_x_continuous(limits = c(15000, 100000), labels = dot1000) +
+    labs(
+        y = "Antal likes", 
+        x = "Antal følgere", 
+        title = "Total antal likes og antal følgere for danske politiske partier", 
+        caption = common_caption
+        )
+```
+
+Her kan vi tydeligt se, at DF og Alternativet løber med sejren, sådan som det også fremgik af de tidligere figurer. DF har fået flere likes (`r format(sum_fbdata$sum_likes[sum_fbdata$partinavne == "Dansk Folkeparti"], big.mark = ".", decimal.mark = ",")`) end de tre regeringspartier tilsammen (`r format(sum(sum_fbdata$sum_likes[sum_fbdata$partinavne %in% c("Venstre", "Konservative", "Liberal Alliance")]), big.mark = ".", decimal.mark = ",")`)!
+
+Spørgsmålet er, om det er fair at sammenligne på denne måde? Fra figurerne ovenfor ser vi hvilke partier der samlet set får mest respons. Det kunne være interessant at se på, hvilke partier der får flest likes pr. følger på deres side. Det vil give os et billede af, hvilke partier der relativt set får mest ud af sine opslag.^[Der er dog en hvis usikkerhed baseret på denne betragtning, da man godt kan like et opslag på en side man ikke følger. Desuden benyttes i udregningen det nuværende antal følgere på siderne, så der tages ikke højde for om det har ændret sig i løbet af året.]
+
+Vi normaliserer derfor antallet af likes på hvert opslag med hensyn til antallet af følgere partiet har. Da der er ret stor udsving i dataene, så beregnes medianen og interkvartilbredden for at vise spredningen i dataene. 
+
+```{r opslag-effektivitet, fig.height = 3.2}
+fbdata %>% 
+  mutate(Likes = Likes / no_followers) %>% 
+  group_by(partinavne) %>% 
+  mutate(med_likes = median(Likes)) %>% 
+  mutate(
+    quart2 = quantile(Likes, 0.25), 
+    quart3 = quantile(Likes, 0.75)) %>% 
+  slice(1L) %>% 
+  ungroup() %>% 
+  mutate(partinavne = forcats::fct_reorder(partinavne, med_likes)) %>% 
+  ggplot(aes(partinavne, med_likes, color = blok)) +
+    geom_segment(
+      aes(y = quart2, yend = quart3, x = partinavne, xend = partinavne), 
+      size = 0.7) +
+    geom_point(aes(size = no_followers)) +
+    coord_flip() +
+    scale_color_manual(values = c("steelblue", "tomato")) +
+    scale_y_continuous(labels = dot1000) +
+    theme(axis.title.y = element_blank()) +
+    labs(
+      y = "Likes per følger", 
+      size = "Antal følgere", 
+      color = "Blok", 
+      title = "Effektivitet af Facebook-opslag fra danske politiske partier", 
+      caption = common_caption
+      ) +
+  annotate("rect", 
+    xmin = 1.7, xmax = 4.3, ymin = 0.0245, ymax = 0.0355, 
+    fill = "white", color = "grey90"
+    ) +
+  annotate("segment", x = 3, xend = 3, y = 0.025, yend = 0.035, color = "black") +
+  annotate("text", x = 3.8, y = 0.03, label = "Interkvartilbredde") +
+  annotate("text", x = 2.2, y = 0.0275, label = "Median") +
+  annotate("point", x = 3, y = 0.0275, size = 5)
+```
+
+Med disse resultater i hånden ser vi en ny højdespringer: Nye Borgerlige høster markant flere likes på deres opslag i forhold til antal af følgere end de andre partier. Det tyder på at de enten er bedre til at formulere et budskab til deres målgruppe, eller har en mere engageret målgruppe der følger partiet meget aktivt. Jeg overvejede om Facebooks algoritme kunne spille ind her, således at partierne med mange følgere ikke får vist deres opslag til alle følgere uden at booste deres opslag, men ved første øjekast lader det ikke til at være tilfældet - der er markant forskel mellem antal likes per følger for hhv. DF og Venstre/LA, på trods af at de alle har cirka lige mange følgere. Jeg har fra disse data ikke mulighed for at tjekke om DF booster flere af deres opslag, og derfor får en større effekt, men jeg tror ikke det er tilfældet. 
+
+## Hvilken type opslag virker bedst?
+Til slut kunne man overveje om en bestemt strategi kan hjælpe partierne til at få flere interaktioner fra deres brugere?
+Får man flest likes, delinger og kommentarer på billeder, links eller videoer?
+
+```{r opslag-typer, fig.height=2}
+fbdata %>% 
+  filter(type %in% c("Billede", "Link", "Video")) %>% 
+  select(type, Likes, Kommentarer, Delinger) %>% 
+  gather(key = "measure", value = "count", -type) %>% 
+  group_by(type, measure) %>% 
+  summarise(med = median(count)) %>%
+  ungroup() %>% 
+  ggplot(aes(type, med)) +
+  geom_point() + 
+  geom_segment(aes(x = type, xend = type, y = 0, yend = med)) +
+  coord_flip() +
+  facet_wrap(~measure, scales = "free_x") +
+  theme(axis.title.y = element_blank()) +
+  labs(
+      y = "Median af antal interaktioner", 
+      title = "Brugeres reaktioner med forskellige typer opslag", 
+      caption = common_caption
+      )
+
+```
+
+Så forskellen, hvis den er der, er meget lille. Der skal graves mere ned i indholdet af de succesfulde opslag, for at blive klogere på hvad der gør forskellen partierne imellem.
+
+## Konklusion
+Der er en enorm forskel på hvordan de danske politiske partier agerer på Facebook og hvor stor brugerinteraktion det resulterer i. Dansk Folkeparti og Alternativet høster markant flere Likes end de andre partier, mens Nye Borgerlige får relativt flest likes set i forhold til deres antal af følgere.
+
+Jeg håber at dette indlæg har været inspirerende læsning. At skrive den har for mig været endnu en god oplevelse med en spændende R pakke - jeg bliver gang på gang imponeret over mængden af frit tilgængelige pakker der er til alle tænkelige formål.
+
+Hvis du har kommentarer til mine metoder og lignende, så er du meget velkommen til at lægge en kommentar herunder. 

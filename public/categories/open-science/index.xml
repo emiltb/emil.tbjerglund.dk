@@ -101,7 +101,7 @@ knitr::kable(
   ggplot(aes(x = wt, y = mpg, color = Transmission)) +
   geom_point() +
   labs(x = &amp;quot;Weight (t)&amp;quot;, y = &amp;quot;Mileage (km/L)&amp;quot;, title = &amp;quot;Fuel economy&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2017-07-07-open-science-tools-for-our-research-group_files/figure-html/data-plot-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/&#34;https://emil.tbjerglund.dk/&#34;  # End your URL with a `/` trailing slash.post/2017-07-07-open-science-tools-for-our-research-group_files/figure-html/data-plot-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;reuse-of-work-through-an-r-package&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Reuse of work through an R package&lt;/h3&gt;

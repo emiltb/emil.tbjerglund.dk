@@ -1,4 +1,5 @@
-baseurl = "https://emil.tbjerglund.dk/"  # End your URL with a `/` trailing slash.
+baseurl = "https://emil.tbjerglund.dk/"  
+# End your URL with a `/` trailing slash.
 title = "Open and Efficient Research"
 copyright = "&copy; 2017 Emil Tveden Bjerglund"
 theme = "hugo-academic"
@@ -79,8 +80,8 @@ defaultContentLanguageInSubdir = false
   #   https://gcushen.github.io/hugo-academic-demo/post/writing-markdown-latex/#highlighting-options
   highlight = true
   highlight_languages = ["r"]
-  highlight_style = "github"
-  highlight_version = "9.9.0"
+  highlight_style = "atom-one-light"
+  highlight_version = "9.12.0"
 
   # Enable native social sharing buttons?
   sharing = true

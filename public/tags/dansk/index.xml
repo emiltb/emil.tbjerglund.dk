@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Dansk on Open and Efficient Research</title>
+    <link>/tags/dansk/</link>
+    <description>Recent content in Dansk on Open and Efficient Research</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2017 Emil Tveden Bjerglund</copyright>
+    <lastBuildDate>Tue, 19 Sep 2017 00:00:00 +0000</lastBuildDate>
+    <atom:link href="/tags/dansk/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Hvordan klarer de politiske partier sig på Facebook?</title>
+      <link>/post/hvordan-klarer-de-politiske-partier-sig-paa-facebook/</link>
+      <pubDate>Tue, 19 Sep 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/post/hvordan-klarer-de-politiske-partier-sig-paa-facebook/</guid>
+      <description>&lt;p&gt;For ganske nyligt opdagede jeg, at der er lavet en &lt;a href=&#34;https://github.com/pablobarbera/Rfacebook&#34;&gt;RFacebook&lt;/a&gt; pakke til at trække data fra Facebooks Graph API. Det blev brugt til en analyse af &lt;a href=&#34;http://rforjournalists.com/2017/09/10/comparing-donald-trump-and-hillary-clintons-facebook-pages-during-the-us-presidential-election-2016/&#34;&gt;Donald Trump og Hillary Clintons kampagner under den seneste amerikanske valgkamp&lt;/a&gt;. Det kunne være interessant at se hvad vi kan sige om de danske politiske partier baseret på deres facebook-aktivitet.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Hvem er mest aktive?&lt;/li&gt;
+&lt;li&gt;Hvem er mest effektive i sin kommunikation?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Dele af R-koden i dette indlæg er skjult for at øge læsbarheden, men den fulde kildekode er tilgængelig på &lt;a href=&#34;https://github.com/emiltb/emil.tbjerglund.dk/tree/master/content/post&#34;&gt;Github&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Det kræver en Access Token at få adgang til API’et. Den kan hentes &lt;a href=&#34;https://developers.facebook.com/tools/explorer/&#34;&gt;her&lt;/a&gt;. Jeg har gemt den i variablen &lt;code&gt;fb_token&lt;/code&gt;. Nedenstående kode henter derefter data fra partiernes facebook sider vha. &lt;code&gt;getPage()&lt;/code&gt; funktionen fra &lt;code&gt;RFacebook&lt;/code&gt; mellem 20. september 2016 og 19. september 2017. Data gemmes i en fil, således at vi ikke behøver gentage API-kaldet i en senere session (det tager nogle minutter at hente al data ned).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(Rfacebook)
+library(lubridate)
+
+start &amp;lt;- &amp;quot;2016/09/20&amp;quot;
+end &amp;lt;- &amp;quot;2017/09/19&amp;quot;
+common_caption &amp;lt;- paste0(&amp;quot;Data fra &amp;quot;, start, &amp;quot; til &amp;quot;, end, &amp;quot;\n@emilbp&amp;quot;)
+
+if (!file.exists(&amp;quot;data/fbdata.Rdata&amp;quot;)) {
+  data &amp;lt;- tibble(partinavne = c(&amp;quot;venstre.dk&amp;quot;, &amp;quot;socialdemokratiet&amp;quot;, &amp;quot;Konservative&amp;quot;,
+    &amp;quot;danskfolkeparti&amp;quot;, &amp;quot;LiberalAlliance&amp;quot;, &amp;quot;radikalevenstre&amp;quot;, 
+    &amp;quot;sfparti&amp;quot;, &amp;quot;enhedslisten&amp;quot;, &amp;quot;alternativet.dk&amp;quot;, 
+    &amp;quot;nyeborgerlige&amp;quot;)) %&amp;gt;% 
+    mutate(
+      data = map(partinavne, getPage, 
+        token = fb_token, n = 5000, since=start, until=end)
+      ) %&amp;gt;% 
+    mutate(data = map(data, as_tibble))
+saveRDS(data, file = &amp;quot;data/fbdata.Rdata&amp;quot;)
+} else {
+  data &amp;lt;- readRDS(&amp;quot;data/fbdata.Rdata&amp;quot;)
+}
+data&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 10 x 2
+##           partinavne                data
+##                &amp;lt;chr&amp;gt;              &amp;lt;list&amp;gt;
+##  1        venstre.dk &amp;lt;tibble [422 x 11]&amp;gt;
+##  2 socialdemokratiet &amp;lt;tibble [321 x 11]&amp;gt;
+##  3      Konservative &amp;lt;tibble [591 x 11]&amp;gt;
+##  4   danskfolkeparti &amp;lt;tibble [371 x 11]&amp;gt;
+##  5   LiberalAlliance &amp;lt;tibble [340 x 11]&amp;gt;
+##  6   radikalevenstre &amp;lt;tibble [489 x 11]&amp;gt;
+##  7           sfparti &amp;lt;tibble [571 x 11]&amp;gt;
+##  8      enhedslisten &amp;lt;tibble [567 x 11]&amp;gt;
+##  9   alternativet.dk &amp;lt;tibble [824 x 11]&amp;gt;
+## 10     nyeborgerlige &amp;lt;tibble [223 x 11]&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;På de respektive facebook-sider kan vi naturligvis også finde antallet af følgere - dem gemmer vi også lige, da vi skal bruge dem senere.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Antal følgere pr. 19. september 2017
+no_followers &amp;lt;- tribble(
+  ~partinavne, ~no_followers,
+  &amp;quot;Venstre&amp;quot;, 68212,
+  &amp;quot;Socialdemokratiet&amp;quot;, 93672,
+  &amp;quot;Konservative&amp;quot;, 32615,
+  &amp;quot;Dansk Folkeparti&amp;quot;, 84510,
+  &amp;quot;Liberal Alliance&amp;quot;, 93861,
+  &amp;quot;Radikale Venstre&amp;quot;, 36298,
+  &amp;quot;SF&amp;quot;, 35261,
+  &amp;quot;Enhedslisten&amp;quot;, 79713,
+  &amp;quot;Alternativet&amp;quot;, 91329,
+  &amp;quot;Nye Borgerlige&amp;quot;, 21553
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Vores &lt;code&gt;data&lt;/code&gt; objekt indeholder partinavnene og en tabel med data for hvert parti. Lad os lige tage et kig på, hvilke informationer vi har tilgængelige.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;colnames(data$data[[1]])&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##  [1] &amp;quot;from_id&amp;quot;        &amp;quot;from_name&amp;quot;      &amp;quot;message&amp;quot;        &amp;quot;created_time&amp;quot;  
+##  [5] &amp;quot;type&amp;quot;           &amp;quot;link&amp;quot;           &amp;quot;id&amp;quot;             &amp;quot;story&amp;quot;         
+##  [9] &amp;quot;likes_count&amp;quot;    &amp;quot;comments_count&amp;quot; &amp;quot;shares_count&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Vi har altså en del data på hvert post - hvornår den er afsendt, hvilken type post (video, tekst, billede) samt hvor mange likes, kommentarer og delinger der er. Især den sidste del er interessant for at undersøge hvor godt de forskellige partier præsterer på Facebook.&lt;/p&gt;
+&lt;p&gt;Vi laver lige et par modifikationer til vores datasæt, for at gøre det nemmere at arbejde med. Vi tilføjer en kolonne med &lt;code&gt;mutate()&lt;/code&gt; der fortæller om partiet tilhører rød eller blå blok og retter partinavnene til så de står pænere i de plots vi laver senere med &lt;code&gt;case_when()&lt;/code&gt;. Så kobler vi antallet af følgere på tabellen med &lt;code&gt;left_join()&lt;/code&gt;, således at disse tal bliver nemmere at arbejde med senere og pakker alle tabellerne ud med &lt;code&gt;unnest()&lt;/code&gt;, således at det hele er samlet i en stor tabel.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fbdata &amp;lt;- data %&amp;gt;% 
+  mutate(blok = ifelse(partinavne %in% c(&amp;quot;venstre.dk&amp;quot;, &amp;quot;Konservative&amp;quot;,
+    &amp;quot;danskfolkeparti&amp;quot;, &amp;quot;LiberalAlliance&amp;quot;, &amp;quot;nyeborgerlige&amp;quot;), &amp;quot;Blå&amp;quot;, &amp;quot;Rød&amp;quot;))  %&amp;gt;% 
+  mutate(partinavne = case_when(
+    partinavne == &amp;quot;venstre.dk&amp;quot; ~ &amp;quot;Venstre&amp;quot;,
+    partinavne == &amp;quot;socialdemokratiet&amp;quot; ~ &amp;quot;Socialdemokratiet&amp;quot;,
+    partinavne == &amp;quot;Konservative&amp;quot; ~ &amp;quot;Konservative&amp;quot;,
+    partinavne == &amp;quot;danskfolkeparti&amp;quot; ~ &amp;quot;Dansk Folkeparti&amp;quot;,
+    partinavne == &amp;quot;LiberalAlliance&amp;quot; ~ &amp;quot;Liberal Alliance&amp;quot;,
+    partinavne == &amp;quot;radikalevenstre&amp;quot; ~ &amp;quot;Radikale Venstre&amp;quot;,
+    partinavne == &amp;quot;sfparti&amp;quot; ~ &amp;quot;SF&amp;quot;,
+    partinavne == &amp;quot;enhedslisten&amp;quot; ~ &amp;quot;Enhedslisten&amp;quot;,
+    partinavne == &amp;quot;alternativet.dk&amp;quot; ~ &amp;quot;Alternativet&amp;quot;,
+    partinavne == &amp;quot;nyeborgerlige&amp;quot; ~ &amp;quot;Nye Borgerlige&amp;quot;
+  )) %&amp;gt;% 
+  left_join(no_followers) %&amp;gt;% 
+  unnest() %&amp;gt;% 
+  mutate(created_time = as_datetime(created_time)) %&amp;gt;% 
+  mutate(type = case_when(
+    type == &amp;quot;link&amp;quot; ~ &amp;quot;Link&amp;quot;,
+    type == &amp;quot;photo&amp;quot; ~ &amp;quot;Billede&amp;quot;,
+    type == &amp;quot;video&amp;quot; ~ &amp;quot;Video&amp;quot;,
+    TRUE ~ type
+  )) %&amp;gt;% 
+  select(
+    partinavne, blok, no_followers, created_time, type, 
+    Likes = &amp;quot;likes_count&amp;quot;, Delinger = &amp;quot;shares_count&amp;quot;, Kommentarer = &amp;quot;comments_count&amp;quot;
+    )&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 4,719 x 8
+##   partinavne  blok no_followers        created_time    type Likes Delinger
+##        &amp;lt;chr&amp;gt; &amp;lt;chr&amp;gt;        &amp;lt;dbl&amp;gt;              &amp;lt;dttm&amp;gt;   &amp;lt;chr&amp;gt; &amp;lt;dbl&amp;gt;    &amp;lt;dbl&amp;gt;
+## 1    Venstre   Blå        68212 2017-09-17 22:00:00 Billede   212       32
+## 2    Venstre   Blå        68212 2017-09-17 22:00:00    Link   283       33
+## 3    Venstre   Blå        68212 2017-09-16 22:00:00 Billede    78        9
+## 4    Venstre   Blå        68212 2017-09-16 22:00:00 Billede   318       27
+## 5    Venstre   Blå        68212 2017-09-15 22:00:00 Billede   201       16
+## # ... with 4,714 more rows, and 1 more variables: Kommentarer &amp;lt;dbl&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;hvor-aktive-er-partierne&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Hvor aktive er partierne?&lt;/h2&gt;
+&lt;p&gt;Med disse data i hånden er det nu en smal sag at begynde selve analysen. Vi har i alt 4719 Facebook-opslag i vores datasæt. Lad os starte med at få et overblik. Hvilke partier er mest aktive?&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fbdata %&amp;gt;% 
+  group_by(partinavne) %&amp;gt;% 
+  mutate(posts = n()) %&amp;gt;% 
+  slice(1L) %&amp;gt;% 
+  ungroup() %&amp;gt;% 
+  mutate(partinavne = forcats::fct_reorder(partinavne, posts)) %&amp;gt;% 
+  ggplot(aes(partinavne, posts, fill = blok)) + 
+    geom_col() +
+    coord_flip() +
+    scale_fill_manual(values = c(&amp;quot;steelblue&amp;quot;, &amp;quot;tomato&amp;quot;)) +
+    theme(
+      axis.title.y = element_blank(), 
+      legend.position = &amp;quot;none&amp;quot;
+      ) +
+    labs(
+      y = &amp;quot;Antal opslag&amp;quot;, 
+      title = &amp;quot;Antal Facebook-opslag per parti&amp;quot;, 
+      caption = common_caption
+      )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-09-19-hvordan-klarer-de-politiske-partier-sig-paa-facebook_files/figure-html/antal-opslag-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Vi kan bryde det ned efter type af opslag, for at se om der er nogle tendenser.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-09-19-hvordan-klarer-de-politiske-partier-sig-paa-facebook_files/figure-html/antal-opslag-type-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Alternativet er altså ubetinget det mest aktive parti og lægger fleste links, billeder og videoer op. Kategorien Andet dækker over begivenheder, noter og helt almindelige statusopdateringer.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;hvem-far-mest-respons&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Hvem får mest respons?&lt;/h2&gt;
+&lt;p&gt;At være meget aktiv på Facebook kræver blot nogle ihærdige SoMe-typer, men det der virkelig skaber værdi for partierne må være at folk reagerer på deres opslag - det giver synlighed og omtale. Vi kan sammenligne den gennemsnitlige respons for hvert parti i løbet af det sidste år.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fbdata %&amp;gt;% 
+  mutate(month = floor_date(created_time, &amp;quot;month&amp;quot;)) %&amp;gt;% 
+  group_by(partinavne, month) %&amp;gt;% 
+  summarise(
+    Likes = mean(Likes),
+    Kommentarer = mean(Kommentarer),
+    Delinger = mean(Delinger)
+    ) %&amp;gt;% 
+  gather(key = &amp;quot;param&amp;quot;, value = &amp;quot;value&amp;quot;, -partinavne, -month) %&amp;gt;% 
+  ggplot(aes(month, value, color = partinavne)) +
+    geom_line(size = 1.5, alpha = 0.75) +
+    facet_wrap(~param, scales = &amp;quot;free_y&amp;quot;, ncol = 1) +
+    scale_color_brewer(palette = &amp;quot;Paired&amp;quot;) +
+    theme(
+      legend.position = &amp;quot;bottom&amp;quot;, 
+      legend.title = element_blank()
+      ) +
+    labs(
+      x = &amp;quot;Måned&amp;quot;, 
+      y = &amp;quot;Gennemsnit per opslag&amp;quot;, 
+      title = &amp;quot;Engagement på Facebook&amp;quot;, 
+      caption = common_caption
+      ) +
+    scale_x_datetime(date_breaks = &amp;quot;3 months&amp;quot;, date_minor_breaks = &amp;quot;1 month&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-09-19-hvordan-klarer-de-politiske-partier-sig-paa-facebook_files/figure-html/gns-engagement-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Dansk Folkeparti høster altså gennemsnitligt flere likes og kommentarer på deres opslag end de andre partier. Nye Borgerlige har, især i de sidste måneder, fulgt godt med. DF og NB lå langt nede på listen over samlet antal opslag, men til gengæld reagerer deres følgere mere på det de skriver.&lt;/p&gt;
+&lt;p&gt;Vi kan se på hvilke partier der i alt høster størst engagement på Facebook ved at se på summen af likes, kommentarer og delinger måned for måned.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-09-19-hvordan-klarer-de-politiske-partier-sig-paa-facebook_files/figure-html/total-engagement-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Her ser vi at Dansk Folkeparti igen markerer sig i toppen, men Alternativets tilgang med rigtig mange opslag ser også ud til at give resultater, da deres totale antal likes tangerer Dansk Folkepartis. Enhedslisten ser også ud til at skille sig ud her, især hvis man sammenligner med SF, som laver cirka lige så mange opslag.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;hvem-kommunikerer-mest-effektivt-og-far-mest-engagement&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Hvem kommunikerer mest effektivt og får mest engagement?&lt;/h2&gt;
+&lt;p&gt;Det nemmeste regnestykke at lave i den her sammenhæng er nok at se på det totale antal likes for hvert parti i løbet af det sidste år.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sum_fbdata &amp;lt;- fbdata %&amp;gt;% 
+  group_by(partinavne) %&amp;gt;% 
+  mutate(
+    sum_likes = sum(Likes)
+    ) %&amp;gt;% 
+  slice(1L) %&amp;gt;% 
+  ungroup() %&amp;gt;% 
+  mutate(partinavne = forcats::fct_reorder(partinavne, sum_likes))
+
+sum_fbdata %&amp;gt;% 
+  ggplot(aes(no_followers, sum_likes, color = blok)) +
+    #geom_text(aes(label = partinavne)) +
+    geom_point() +
+    ggrepel::geom_text_repel(aes(label = partinavne, color = blok), segment.color=&amp;quot;black&amp;quot;) +
+    scale_color_manual(values = c(&amp;quot;steelblue&amp;quot;, &amp;quot;tomato&amp;quot;)) +
+    scale_fill_manual(values = c(&amp;quot;steelblue&amp;quot;, &amp;quot;tomato&amp;quot;)) +
+    theme(legend.position = &amp;quot;none&amp;quot;)+
+      scale_y_continuous(limits = c(50000, 550000), labels = dot1000) +
+      scale_x_continuous(limits = c(15000, 100000), labels = dot1000) +
+    labs(
+        y = &amp;quot;Antal likes&amp;quot;, 
+        x = &amp;quot;Antal følgere&amp;quot;, 
+        title = &amp;quot;Total antal likes og antal følgere for danske politiske partier&amp;quot;, 
+        caption = common_caption
+        )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-09-19-hvordan-klarer-de-politiske-partier-sig-paa-facebook_files/figure-html/total-likes-folgere-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Her kan vi tydeligt se, at DF og Alternativet løber med sejren, sådan som det også fremgik af de tidligere figurer. DF har fået flere likes (531.986) end de tre regeringspartier tilsammen (410.743)!&lt;/p&gt;
+&lt;p&gt;Spørgsmålet er, om det er fair at sammenligne på denne måde? Fra figurerne ovenfor ser vi hvilke partier der samlet set får mest respons. Det kunne være interessant at se på, hvilke partier der får flest likes pr. følger på deres side. Det vil give os et billede af, hvilke partier der relativt set får mest ud af sine opslag.&lt;a href=&#34;#fn1&#34; class=&#34;footnoteRef&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Vi normaliserer derfor antallet af likes på hvert opslag med hensyn til antallet af følgere partiet har. Da der er ret stor udsving i dataene, så beregnes medianen og interkvartilbredden for at vise spredningen i dataene.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fbdata %&amp;gt;% 
+  mutate(Likes = Likes / no_followers) %&amp;gt;% 
+  group_by(partinavne) %&amp;gt;% 
+  mutate(med_likes = median(Likes)) %&amp;gt;% 
+  mutate(
+    quart2 = quantile(Likes, 0.25), 
+    quart3 = quantile(Likes, 0.75)) %&amp;gt;% 
+  slice(1L) %&amp;gt;% 
+  ungroup() %&amp;gt;% 
+  mutate(partinavne = forcats::fct_reorder(partinavne, med_likes)) %&amp;gt;% 
+  ggplot(aes(partinavne, med_likes, color = blok)) +
+    geom_segment(
+      aes(y = quart2, yend = quart3, x = partinavne, xend = partinavne), 
+      size = 0.7) +
+    geom_point(aes(size = no_followers)) +
+    coord_flip() +
+    scale_color_manual(values = c(&amp;quot;steelblue&amp;quot;, &amp;quot;tomato&amp;quot;)) +
+    scale_y_continuous(labels = dot1000) +
+    theme(axis.title.y = element_blank()) +
+    labs(
+      y = &amp;quot;Likes per følger&amp;quot;, 
+      size = &amp;quot;Antal følgere&amp;quot;, 
+      color = &amp;quot;Blok&amp;quot;, 
+      title = &amp;quot;Effektivitet af Facebook-opslag fra danske politiske partier&amp;quot;, 
+      caption = common_caption
+      ) +
+  annotate(&amp;quot;rect&amp;quot;, 
+    xmin = 1.7, xmax = 4.3, ymin = 0.0245, ymax = 0.0355, 
+    fill = &amp;quot;white&amp;quot;, color = &amp;quot;grey90&amp;quot;
+    ) +
+  annotate(&amp;quot;segment&amp;quot;, x = 3, xend = 3, y = 0.025, yend = 0.035, color = &amp;quot;black&amp;quot;) +
+  annotate(&amp;quot;text&amp;quot;, x = 3.8, y = 0.03, label = &amp;quot;Interkvartilbredde&amp;quot;) +
+  annotate(&amp;quot;text&amp;quot;, x = 2.2, y = 0.0275, label = &amp;quot;Median&amp;quot;) +
+  annotate(&amp;quot;point&amp;quot;, x = 3, y = 0.0275, size = 5)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-09-19-hvordan-klarer-de-politiske-partier-sig-paa-facebook_files/figure-html/opslag-effektivitet-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Med disse resultater i hånden ser vi en ny højdespringer: Nye Borgerlige høster markant flere likes på deres opslag i forhold til antal af følgere end de andre partier. Det tyder på at de enten er bedre til at formulere et budskab til deres målgruppe, eller har en mere engageret målgruppe der følger partiet meget aktivt. Jeg overvejede om Facebooks algoritme kunne spille ind her, således at partierne med mange følgere ikke får vist deres opslag til alle følgere uden at booste deres opslag, men ved første øjekast lader det ikke til at være tilfældet - der er markant forskel mellem antal likes per følger for hhv. DF og Venstre/LA, på trods af at de alle har cirka lige mange følgere. Jeg har fra disse data ikke mulighed for at tjekke om DF booster flere af deres opslag, og derfor får en større effekt, men jeg tror ikke det er tilfældet.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;hvilken-type-opslag-virker-bedst&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Hvilken type opslag virker bedst?&lt;/h2&gt;
+&lt;p&gt;Til slut kunne man overveje om en bestemt strategi kan hjælpe partierne til at få flere interaktioner fra deres brugere? Får man flest likes, delinger og kommentarer på billeder, links eller videoer?&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fbdata %&amp;gt;% 
+  filter(type %in% c(&amp;quot;Billede&amp;quot;, &amp;quot;Link&amp;quot;, &amp;quot;Video&amp;quot;)) %&amp;gt;% 
+  select(type, Likes, Kommentarer, Delinger) %&amp;gt;% 
+  gather(key = &amp;quot;measure&amp;quot;, value = &amp;quot;count&amp;quot;, -type) %&amp;gt;% 
+  group_by(type, measure) %&amp;gt;% 
+  summarise(med = median(count)) %&amp;gt;%
+  ungroup() %&amp;gt;% 
+  ggplot(aes(type, med)) +
+  geom_point() + 
+  geom_segment(aes(x = type, xend = type, y = 0, yend = med)) +
+  coord_flip() +
+  facet_wrap(~measure, scales = &amp;quot;free_x&amp;quot;) +
+  theme(axis.title.y = element_blank()) +
+  labs(
+      y = &amp;quot;Median af antal interaktioner&amp;quot;, 
+      title = &amp;quot;Brugeres reaktioner med forskellige typer opslag&amp;quot;, 
+      caption = common_caption
+      )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-09-19-hvordan-klarer-de-politiske-partier-sig-paa-facebook_files/figure-html/opslag-typer-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Så forskellen, hvis den er der, er meget lille. Der skal graves mere ned i indholdet af de succesfulde opslag, for at blive klogere på hvad der gør forskellen partierne imellem.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;konklusion&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Konklusion&lt;/h2&gt;
+&lt;p&gt;Der er en enorm forskel på hvordan de danske politiske partier agerer på Facebook og hvor stor brugerinteraktion det resulterer i. Dansk Folkeparti og Alternativet høster markant flere Likes end de andre partier, mens Nye Borgerlige får relativt flest likes set i forhold til deres antal af følgere.&lt;/p&gt;
+&lt;p&gt;Jeg håber at dette indlæg har været inspirerende læsning. At skrive den har for mig været endnu en god oplevelse med en spændende R pakke - jeg bliver gang på gang imponeret over mængden af frit tilgængelige pakker der er til alle tænkelige formål.&lt;/p&gt;
+&lt;p&gt;Hvis du har kommentarer til mine metoder og lignende, så er du meget velkommen til at lægge en kommentar herunder.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn1&#34;&gt;&lt;p&gt;Der er dog en hvis usikkerhed baseret på denne betragtning, da man godt kan like et opslag på en side man ikke følger. Desuden benyttes i udregningen det nuværende antal følgere på siderne, så der tages ikke højde for om det har ændret sig i løbet af året.&lt;a href=&#34;#fnref1&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
