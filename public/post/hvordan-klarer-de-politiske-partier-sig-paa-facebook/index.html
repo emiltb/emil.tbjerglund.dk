@@ -251,6 +251,7 @@
 <p>Dele af R-koden i dette indlæg er skjult for at øge læsbarheden, men den fulde kildekode er tilgængelig på <a href="https://github.com/emiltb/emil.tbjerglund.dk/tree/master/content/post">Github</a>.</p>
 <p>Det kræver en Access Token at få adgang til API’et. Den kan hentes <a href="https://developers.facebook.com/tools/explorer/">her</a>. Jeg har gemt den i variablen <code>fb_token</code>. Nedenstående kode henter derefter data fra partiernes facebook sider vha. <code>getPage()</code> funktionen fra <code>RFacebook</code> mellem 20. september 2016 og 19. september 2017. Data gemmes i en fil, således at vi ikke behøver gentage API-kaldet i en senere session (det tager nogle minutter at hente al data ned).</p>
 <pre class="r"><code>library(Rfacebook)
+library(tidyverse)
 library(lubridate)
 
 start &lt;- &quot;2016/09/20&quot;

@@ -24,6 +24,7 @@
 &lt;p&gt;Dele af R-koden i dette indlæg er skjult for at øge læsbarheden, men den fulde kildekode er tilgængelig på &lt;a href=&#34;https://github.com/emiltb/emil.tbjerglund.dk/tree/master/content/post&#34;&gt;Github&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Det kræver en Access Token at få adgang til API’et. Den kan hentes &lt;a href=&#34;https://developers.facebook.com/tools/explorer/&#34;&gt;her&lt;/a&gt;. Jeg har gemt den i variablen &lt;code&gt;fb_token&lt;/code&gt;. Nedenstående kode henter derefter data fra partiernes facebook sider vha. &lt;code&gt;getPage()&lt;/code&gt; funktionen fra &lt;code&gt;RFacebook&lt;/code&gt; mellem 20. september 2016 og 19. september 2017. Data gemmes i en fil, således at vi ikke behøver gentage API-kaldet i en senere session (det tager nogle minutter at hente al data ned).&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(Rfacebook)
+library(tidyverse)
 library(lubridate)
 
 start &amp;lt;- &amp;quot;2016/09/20&amp;quot;
